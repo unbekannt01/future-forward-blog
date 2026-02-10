@@ -24,7 +24,7 @@ const Contact = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
             {[
-              { icon: Mail, label: "Email", value: "hello@nexblog.in" },
+              { icon: Mail, label: "Email", value: "hello@NexBlog.in" },
               { icon: MapPin, label: "Location", value: "New Delhi, India" },
               { icon: Phone, label: "Phone", value: "+91 98765 43210" },
             ].map(({ icon: Icon, label, value }, i) => (

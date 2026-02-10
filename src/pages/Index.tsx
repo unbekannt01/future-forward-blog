@@ -5,7 +5,7 @@ import BlogCard from "@/components/BlogCard";
 import Newsletter from "@/components/Newsletter";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { blogPosts } from "@/data/blogData";
+import { blogPosts } from "@/config/content";
 
 const Index = () => {
   const featured = blogPosts.slice(0, 3);
@@ -17,7 +17,7 @@ const Index = () => {
       {/* Hero */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-16">
         <div className="absolute inset-0">
-          <img src={heroImg} alt="" className="w-full h-full object-cover opacity-40" />
+          <img src="https://res.cloudinary.com/ddi8qw8fw/image/upload/v1770737413/nexblog_et3dga.png" alt="" className="w-full h-full object-cover opacity-40" />
           <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background" />
         </div>
 

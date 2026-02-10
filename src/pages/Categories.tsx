@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { categories, getPostsByCategory } from "@/data/blogData";
+import { categories, getPostsByCategory } from "@/config/content";
 import { Cpu, TrendingUp, DollarSign, Share2, Flame, Rocket } from "lucide-react";
 
 const iconMap: Record<string, React.ReactNode> = {

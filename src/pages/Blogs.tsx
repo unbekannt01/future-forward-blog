@@ -1,10 +1,11 @@
+/* eslint-disable prefer-const */
 import { useState, useMemo } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BlogCard from "@/components/BlogCard";
 import SearchBar from "@/components/SearchBar";
 import CategoryFilter from "@/components/CategoryFilter";
-import { blogPosts, categories, searchPosts, getPostsByCategory } from "@/data/blogData";
+import { blogPosts, categories, searchPosts, getPostsByCategory } from "@/config/content";
 
 const Blogs = () => {
   const [search, setSearch] = useState("");
