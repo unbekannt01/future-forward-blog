@@ -34,8 +34,8 @@ const Index = () => {
           </h1>
 
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 opacity-0 animate-fade-in" style={{ animationDelay: "200ms", animationFillMode: "forwards" }}>
-            AI, Technology, Digital Growth aur future trends — sab kuch ek jagah.
-            Padho, seekho aur grow karo! 🚀
+            AI, Technology, Digital Growth and future trends — all in one place.
+            Read, learn and grow! 🚀
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center opacity-0 animate-fade-in" style={{ animationDelay: "400ms", animationFillMode: "forwards" }}>
@@ -82,7 +82,7 @@ const Index = () => {
               <h2 className="text-2xl md:text-3xl font-bold">
                 Latest <span className="gradient-text">Posts</span>
               </h2>
-              <p className="text-sm text-muted-foreground mt-1">Fresh content har hafte</p>
+              <p className="text-sm text-muted-foreground mt-1">Fresh content every week</p>
             </div>
             <Link to="/blogs" className="text-sm text-primary flex items-center gap-1 hover:underline">
               View All <ArrowRight className="w-3.5 h-3.5" />

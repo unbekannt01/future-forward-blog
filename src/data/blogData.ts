@@ -31,31 +31,31 @@ export const categories = [
 export const blogPosts: BlogPost[] = [
   {
     id: "ai-revolution-2026",
-    title: "AI Revolution 2026: Kaise Artificial Intelligence Badal Rahi Hai Duniya 🚀",
-    excerpt: "AI ab sirf ek technology nahi rahi — ye ek revolution hai. Jaaniye kaise AI 2026 mein har industry ko transform kar rahi hai aur aapke liye kya opportunities hain.",
-    content: `## AI Ka Naya Yug Shuru Ho Chuka Hai
+    title: "AI Revolution 2026: How Artificial Intelligence Is Changing the World 🚀",
+    excerpt: "AI is no longer just a technology — it's a revolution. Discover how AI is transforming every industry in 2026 and what opportunities await you.",
+    content: `## The New Era of AI Has Begun
 
-Dosto, 2026 mein AI ne jo growth dikhayi hai, wo literally mind-blowing hai! ChatGPT se lekar autonomous cars tak, AI har jagah apna magic dikha rahi hai.
+In 2026, the growth AI has shown is literally mind-blowing! From ChatGPT to autonomous cars, AI is working its magic everywhere.
 
-### Key Trends Jo Aapko Jaanne Chahiye:
+### Key Trends You Need to Know:
 
-**1. Generative AI Ka Boom**
-Ab AI sirf answers nahi deti — wo create karti hai. Images, videos, music, code — sab kuch AI generate kar sakti hai. Aur ye sirf beginning hai!
+**1. The Generative AI Boom**
+AI no longer just answers questions — it creates. Images, videos, music, code — AI can generate it all. And this is just the beginning!
 
 **2. AI in Healthcare**
-Imagine karo — AI aapki disease ko detect kar sakti hai doctor se pehle. Early diagnosis, personalized treatment, drug discovery — AI ne healthcare ko next level pe le jaaya hai.
+Imagine — AI can detect your disease before a doctor can. Early diagnosis, personalized treatment, drug discovery — AI has taken healthcare to the next level.
 
 **3. AI Jobs Market**
-"AI meri job le legi!" — ye sochna band karo. Actually, AI ne naye jobs create kiye hain. AI Prompt Engineer, AI Trainer, AI Ethics Officer — ye sab roles 2 saal pehle exist nahi karte the.
+"AI will take my job!" — stop thinking that. AI has actually created new jobs. AI Prompt Engineer, AI Trainer, AI Ethics Officer — these roles didn't exist two years ago.
 
-### Aapke Liye Action Steps:
-- AI tools seekhna start karo (ChatGPT, Midjourney, Claude)
-- Apne field mein AI ka use explore karo
-- AI-related courses join karo
+### Action Steps for You:
+- Start learning AI tools (ChatGPT, Midjourney, Claude)
+- Explore how AI applies to your field
+- Join AI-related courses
 
-> "Jo log AI ke saath adapt karenge, wahi future mein lead karenge." 💡
+> "Those who adapt with AI will lead the future." 💡
 
-AI se daro mat, AI ko apna tool banao. Future unka hai jo technology ke saath chalte hain!`,
+Don't fear AI — make it your tool. The future belongs to those who move with technology!`,
     category: "AI & Technology",
     author: "Arjun Verma",
     date: "2026-02-08",
@@ -65,36 +65,36 @@ AI se daro mat, AI ko apna tool banao. Future unka hai jo technology ke saath ch
   },
   {
     id: "online-earning-guide",
-    title: "2026 Mein Online Earning: ₹50,000/Month Kamane Ka Complete Roadmap 💰",
-    excerpt: "Ghar baithe paise kamana ab mushkil nahi raha. Ye detailed guide aapko step-by-step batayegi ki kaise aap online earning start kar sakte ho.",
-    content: `## Online Earning Ka Golden Era
+    title: "Online Earning in 2026: A Complete Roadmap to $1,000+/Month 💰",
+    excerpt: "Making money from home is no longer difficult. This detailed guide will show you step-by-step how to start earning online.",
+    content: `## The Golden Era of Online Earning
 
-Bhai log, ab zamaana badal gaya hai. 9-to-5 job sirf ek option hai, but online earning ek ocean hai jisme opportunities hi opportunities hain!
+The times have changed. A 9-to-5 job is just one option, but online earning is an ocean full of opportunities!
 
 ### Top 5 Online Earning Methods in 2026:
 
-**1. Freelancing (₹30K-₹2L/month)**
-Fiverr, Upwork pe apni skills becho. Writing, design, coding — kuch bhi chalega. Start chota karo, gradually grow karo.
+**1. Freelancing ($500–$3,000/month)**
+Sell your skills on Fiverr and Upwork. Writing, design, coding — anything works. Start small, grow gradually.
 
-**2. Content Creation (₹20K-₹5L/month)**
-YouTube, Instagram Reels, Blog — content king hai aur rahega. Consistency rakho, niche choose karo, aur value deliver karo.
+**2. Content Creation ($300–$5,000/month)**
+YouTube, Instagram Reels, Blogs — content is king and always will be. Stay consistent, choose your niche, and deliver value.
 
-**3. AI Tools Business (₹50K-₹10L/month)**
-AI tools use karke services do — logo design, content writing, video editing. Kam time mein zyada kaam karo.
+**3. AI Tools Business ($700–$10,000/month)**
+Use AI tools to offer services — logo design, content writing, video editing. Do more work in less time.
 
-**4. Affiliate Marketing (₹10K-₹1L/month)**
-Products promote karo, commission kamao. Amazon, Flipkart affiliate programs se start karo.
+**4. Affiliate Marketing ($200–$2,000/month)**
+Promote products, earn commissions. Start with Amazon and other affiliate programs.
 
-**5. Digital Products (₹20K-₹3L/month)**
-E-books, courses, templates bana ke becho. Ek baar banao, baar baar kamao!
+**5. Digital Products ($300–$5,000/month)**
+Create and sell e-books, courses, and templates. Build once, earn repeatedly!
 
 ### Pro Tips:
-- Pehle 3 mahine patience rakho
-- Ek skill pe focus karo
-- Portfolio banao
-- Networking karo
+- Be patient for the first 3 months
+- Focus on one skill at a time
+- Build your portfolio
+- Network actively
 
-> "Paisa kamana mushkil nahi hai, sahi direction mein kaam karna zaroori hai." 🎯`,
+> "Earning money isn't hard — working in the right direction is what matters." 🎯`,
     category: "Online Earning",
     author: "Priya Sharma",
     date: "2026-02-05",
@@ -104,35 +104,35 @@ E-books, courses, templates bana ke becho. Ek baar banao, baar baar kamao!
   },
   {
     id: "social-media-growth",
-    title: "Instagram & YouTube Growth Hacks 2026: 0 Se 100K Followers Kaise? 📱",
-    excerpt: "Social media pe grow karna hai? Ye proven strategies follow karo aur dekho kaise aapke followers exponentially badhte hain.",
-    content: `## Social Media Growth Ka Secret Formula
+    title: "Instagram & YouTube Growth Hacks 2026: From 0 to 100K Followers 📱",
+    excerpt: "Want to grow on social media? Follow these proven strategies and watch your followers increase exponentially.",
+    content: `## The Secret Formula for Social Media Growth
 
-Aaj kal har koi social media pe famous hona chahta hai, but bahut kam log sahi strategy follow karte hain. Chalo main tumhe real talk deta hoon!
+Everyone wants to be famous on social media, but very few follow the right strategy. Let me give you the real talk!
 
 ### Instagram Growth Strategy:
 
-**1. Content Pillars Define Karo**
-3-4 content types choose karo — educational, entertaining, inspirational, behind-the-scenes. Isse aapka content consistent rahega.
+**1. Define Your Content Pillars**
+Choose 3–4 content types — educational, entertaining, inspirational, behind-the-scenes. This keeps your content consistent.
 
 **2. Reels Are King 👑**
-Short-form video content abhi bhi sabse zyada reach deta hai. Daily 1-2 Reels post karo, trending audio use karo.
+Short-form video content still delivers the most reach. Post 1–2 Reels daily and use trending audio.
 
 **3. Engagement Strategy**
-Post karne ke baad 30 minutes engage karo — comments ka reply do, DMs answer karo, similar accounts pe comment karo.
+Spend 30 minutes engaging after posting — reply to comments, answer DMs, and comment on similar accounts.
 
 ### YouTube Growth Strategy:
 
-**1. SEO Optimize Karo**
-Title, description, tags — sab mein keywords use karo. TubeBuddy ya VidIQ tools use karo research ke liye.
+**1. Optimize for SEO**
+Use keywords in your title, description, and tags. Use tools like TubeBuddy or VidIQ for research.
 
-**2. Thumbnail Game Strong Rakho**
-Click-through rate thumbnail pe depend karta hai. Bold text, expressive face, contrasting colors — ye formula kaam karta hai.
+**2. Keep Your Thumbnail Game Strong**
+Click-through rate depends on your thumbnail. Bold text, expressive face, contrasting colors — this formula works.
 
-**3. Consistency > Quality (initially)**
-Pehle 50 videos mein quality pe zyada focus mat karo. Consistent raho, improve hote jaoge.
+**3. Consistency > Quality (Initially)**
+Don't over-focus on quality for your first 50 videos. Stay consistent, and you'll improve over time.
 
-> "Algorithm ko mat samjho, audience ko samjho." 🧠`,
+> "Don't try to understand the algorithm — understand your audience." 🧠`,
     category: "Social Media",
     author: "Rohan Malik",
     date: "2026-02-01",
@@ -142,33 +142,33 @@ Pehle 50 videos mein quality pe zyada focus mat karo. Consistent raho, improve h
   },
   {
     id: "motivation-success-mindset",
-    title: "Success Mindset: Wo 5 Habits Jo Har Successful Insaan Mein Hoti Hain 🧠",
-    excerpt: "Success sirf hard work se nahi aata — sahi mindset se aata hai. Jaaniye wo 5 powerful habits jo aapki life transform kar sakti hain.",
-    content: `## Mindset Hi Sab Kuch Hai
+    title: "Success Mindset: 5 Habits Every Successful Person Has 🧠",
+    excerpt: "Success doesn't come from hard work alone — it comes from the right mindset. Discover 5 powerful habits that can transform your life.",
+    content: `## Mindset Is Everything
 
-Main tumhe ek baat bolu — talent overrated hai. Discipline, consistency aur sahi mindset — ye teen cheezein tumhe kahin bhi le ja sakti hain.
+Let me tell you something — talent is overrated. Discipline, consistency, and the right mindset — these three things can take you anywhere.
 
 ### 5 Habits of Highly Successful People:
 
 **1. Wake Up Early (5 AM Club) ⏰**
-Early morning ka time sabse productive hota hai. No distractions, clear mind, focused work. Try karo 21 din — habit ban jaayegi.
+Early morning is the most productive time. No distractions, clear mind, focused work. Try it for 21 days — it'll become a habit.
 
-**2. Read Daily (30 mins minimum) 📚**
-Warren Buffett din mein 5 ghante read karta hai. Tumse sirf 30 min maang raha hoon. Books, articles, research papers — kuch bhi padho but padho zaroor.
+**2. Read Daily (30 Minutes Minimum) 📚**
+Warren Buffett reads 5 hours a day. I'm only asking for 30 minutes. Books, articles, research papers — read anything, but read.
 
 **3. Exercise & Health First 💪**
-Body fit toh mind fit. Daily 30-45 minutes exercise — gym, yoga, running, kuch bhi. Energy level automatically badh jaayega.
+Fit body, fit mind. 30–45 minutes of daily exercise — gym, yoga, running, anything. Your energy levels will automatically increase.
 
 **4. Learn to Say NO ❌**
-Har cheez mein haan bolna band karo. Apne goals ke liye time protect karo. "No" bolna ek superpower hai.
+Stop saying yes to everything. Protect your time for your goals. Saying "no" is a superpower.
 
 **5. Review & Reflect (Journal) 📝**
-Raat ko 10 minutes — aaj kya seekha, kya achieve kiya, kal kya karna hai. Self-awareness success ki pehli seedi hai.
+Spend 10 minutes at night — what did you learn today, what did you achieve, what's the plan for tomorrow. Self-awareness is the first step to success.
 
 ### Bonus Tip:
 Surround yourself with people who inspire you. Environment matters more than motivation.
 
-> "Motivation tumhe start karwata hai, discipline tumhe finish line tak le jaata hai." 🏆`,
+> "Motivation gets you started, discipline takes you to the finish line." 🏆`,
     category: "Motivation",
     author: "Kavya Singh",
     date: "2026-01-28",
@@ -178,36 +178,36 @@ Surround yourself with people who inspire you. Environment matters more than mot
   },
   {
     id: "digital-marketing-trends",
-    title: "Digital Marketing 2026: Ye 7 Trends Miss Mat Karna! 📊",
-    excerpt: "Digital marketing duniya mein tezi se badal raha hai. 2026 ke sabse important trends yahan hain — in par dhyan do toh business grow hoga guaranteed.",
-    content: `## Digital Marketing Ka Future Yahan Hai
+    title: "Digital Marketing 2026: 7 Trends You Can't Afford to Miss! 📊",
+    excerpt: "Digital marketing is evolving rapidly. Here are the most important trends for 2026 — pay attention to these and your business growth is guaranteed.",
+    content: `## The Future of Digital Marketing Is Here
 
-Dosto, digital marketing mein jo 2024 mein kaam karta tha, wo 2026 mein outdated ho chuka hai. Let's talk about what's actually working NOW.
+What worked in digital marketing in 2024 is already outdated in 2026. Let's talk about what's actually working NOW.
 
 ### Top 7 Digital Marketing Trends 2026:
 
 **1. AI-Powered Personalization**
-Generic ads ab kaam nahi karte. AI se har user ko personalized experience do — emails, ads, website content sab customized hona chahiye.
+Generic ads no longer work. Use AI to deliver personalized experiences to every user — emails, ads, and website content should all be customized.
 
 **2. Short-Form Video Dominance**
-Reels, Shorts, TikTok — ye formats ab marketing ka backbone hain. 60 seconds mein apna message deliver karo.
+Reels, Shorts, TikTok — these formats are now the backbone of marketing. Deliver your message in 60 seconds.
 
 **3. Voice Search Optimization**
-"Hey Google, best restaurant near me" — voice search queries badh rahe hain. Apne content ko conversational language mein optimize karo.
+"Hey Google, best restaurant near me" — voice search queries are increasing. Optimize your content with conversational language.
 
 **4. Community Building > Followers**
-10,000 followers se zyada valuable hai 100 loyal community members. Discord, Telegram, WhatsApp groups banao.
+100 loyal community members are more valuable than 10,000 followers. Build Discord, Telegram, and WhatsApp groups.
 
 **5. Micro-Influencer Marketing**
-Big celebrities se better ROI dete hain micro-influencers (10K-50K followers). Authentic lagta hai, trust zyada hota hai.
+Micro-influencers (10K–50K followers) deliver better ROI than big celebrities. They feel authentic and build more trust.
 
 **6. Interactive Content**
-Quizzes, polls, AR filters, interactive videos — engagement badhane ka sabse acha tarika.
+Quizzes, polls, AR filters, interactive videos — the best way to boost engagement.
 
 **7. Privacy-First Marketing**
-Cookies ja rahe hain, first-party data collect karo. Email lists aur direct relationships build karo.
+Cookies are going away — collect first-party data. Build email lists and direct relationships.
 
-> "Marketing ka future personal, authentic aur value-driven hai." 🎯`,
+> "The future of marketing is personal, authentic, and value-driven." 🎯`,
     category: "Digital Growth",
     author: "Amit Patel",
     date: "2026-01-25",
@@ -217,35 +217,35 @@ Cookies ja rahe hain, first-party data collect karo. Email lists aur direct rela
   },
   {
     id: "future-tech-predictions",
-    title: "2030 Tak Ye 5 Technologies Duniya Badal Dengi 🌍",
-    excerpt: "Future mein kya hone wala hai? Ye 5 technologies abhi apne early stage mein hain but 2030 tak ye sab mainstream ho jaayengi.",
-    content: `## Future Yahan Hai, Aur Ye Incredible Hai!
+    title: "5 Technologies That Will Change the World by 2030 🌍",
+    excerpt: "What does the future hold? These 5 technologies are in their early stages now, but by 2030 they'll all be mainstream.",
+    content: `## The Future Is Here, and It's Incredible!
 
-Science fiction ab science fact ban raha hai. Jo cheezein hum movies mein dekhte the, wo ab reality ban rahi hain. Let me show you what's coming!
+Science fiction is becoming science fact. The things we used to see in movies are now becoming reality. Let me show you what's coming!
 
 ### 5 Technologies That Will Change Everything:
 
 **1. Quantum Computing 🔮**
-Normal computers 0 aur 1 mein sochte hain. Quantum computers dono simultaneously process kar sakte hain. Drug discovery, climate modeling, cryptography — sab revolutionize hoga.
+Normal computers think in 0s and 1s. Quantum computers can process both simultaneously. Drug discovery, climate modeling, cryptography — everything will be revolutionized.
 
 **2. Brain-Computer Interface (BCI) 🧠**
-Elon Musk ka Neuralink sirf start hai. Imagine karo — apne thoughts se computer control karna. Paralyzed log walk kar payenge, blind log dekh payenge.
+Elon Musk's Neuralink is just the start. Imagine controlling your computer with your thoughts. Paralyzed people will walk, blind people will see.
 
 **3. Autonomous Everything 🚗**
-Self-driving cars toh suna hoga, but self-flying taxis, autonomous delivery drones, robotic warehouses — sab aa raha hai by 2030.
+You've heard of self-driving cars, but self-flying taxis, autonomous delivery drones, and robotic warehouses — all of this is coming by 2030.
 
 **4. Fusion Energy ☀️**
-Unlimited clean energy — ye dream ab reality ke kareebi hai. Multiple companies working hain commercially viable fusion reactors pe.
+Unlimited clean energy — this dream is closer to reality than ever. Multiple companies are working on commercially viable fusion reactors.
 
 **5. Spatial Computing (AR/VR) 🥽**
-Apple Vision Pro sirf beginning tha. 2030 tak humara computing experience completely spatial hoga — screens ki zaroorat nahi rahegi.
+Apple Vision Pro was just the beginning. By 2030, our computing experience will be completely spatial — screens won't be needed anymore.
 
-### Kya Karna Chahiye?
-- In technologies ke baare mein updated raho
-- Related skills seekho
+### What Should You Do?
+- Stay updated on these technologies
+- Learn related skills
 - Invest in future-ready companies
 
-> "Future predict karne ka sabse acha tarika hai — use create karna." 🚀`,
+> "The best way to predict the future is to create it." 🚀`,
     category: "Future Trends",
     author: "Neha Gupta",
     date: "2026-01-20",

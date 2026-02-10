@@ -6,7 +6,7 @@ const initialComments: Comment[] = [
   {
     id: "1",
     author: "Rahul Kumar",
-    content: "Bahut accha article hai bhai! AI ke baare mein itna detail mein padha pehli baar. Keep it up! 🔥",
+    content: "What an amazing article! First time I've read about AI in such detail. Keep it up! 🔥",
     date: "2026-02-09",
   },
   {

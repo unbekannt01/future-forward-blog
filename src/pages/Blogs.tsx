@@ -24,7 +24,7 @@ const Blogs = () => {
             <h1 className="text-3xl md:text-4xl font-bold mb-2">
               All <span className="gradient-text">Blogs</span>
             </h1>
-            <p className="text-muted-foreground text-sm">Explore our latest articles aur grow karo! 🚀</p>
+            <p className="text-muted-foreground text-sm">Explore our latest articles and level up! 🚀</p>
           </div>
 
           <div className="flex flex-col md:flex-row gap-4 mb-8">
@@ -39,7 +39,7 @@ const Blogs = () => {
 
           {filtered.length === 0 ? (
             <div className="text-center py-20">
-              <p className="text-muted-foreground">Koi result nahi mila 😕 Try different keywords!</p>
+              <p className="text-muted-foreground">No results found 😕 Try different keywords!</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

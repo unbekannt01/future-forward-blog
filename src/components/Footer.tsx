@@ -14,8 +14,8 @@ const Footer = () => {
               <span className="text-lg font-bold gradient-text">NexBlog</span>
             </Link>
             <p className="text-sm text-muted-foreground max-w-sm">
-              Next generation blog platform covering AI, Technology, Digital Growth aur bahut kuch.
-              Future ke saath chaliye! 🚀
+              Next generation blog platform covering AI, Technology, Digital Growth and much more.
+              Stay ahead with the future! 🚀
             </p>
             <div className="flex gap-3 mt-4">
               {[

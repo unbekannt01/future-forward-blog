@@ -24,7 +24,7 @@ const Categories = () => {
           <h1 className="text-3xl md:text-4xl font-bold mb-2">
             Browse <span className="gradient-text">Categories</span>
           </h1>
-          <p className="text-muted-foreground text-sm mb-10">Apna favourite topic choose karo 🎯</p>
+          <p className="text-muted-foreground text-sm mb-10">Choose your favourite topic 🎯</p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {cats.map((cat, i) => {

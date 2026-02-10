@@ -14,12 +14,12 @@ const About = () => {
 
           <div className="glass rounded-xl p-8 mb-8 animate-fade-in" style={{ animationDelay: "100ms", animationFillMode: "forwards" }}>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              NexBlog ek modern blog platform hai jo AI, Technology, Digital Growth, Online Earning, 
-              Social Media, Motivation aur Future Trends pe focused hai. 🚀
+              NexBlog is a modern blog platform focused on AI, Technology, Digital Growth, Online Earning, 
+              Social Media, Motivation and Future Trends. 🚀
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              Humara mission hai — complex tech topics ko simple, engaging aur Hinglish mein explain karna 
-              taaki har Indian reader easily samajh sake aur apni digital journey start kar sake!
+              Our mission is to explain complex tech topics in a simple, engaging way 
+              so that every reader can easily understand and kickstart their digital journey!
             </p>
           </div>
 
@@ -28,7 +28,7 @@ const About = () => {
               { icon: Target, title: "Our Mission", desc: "Make tech knowledge accessible to everyone" },
               { icon: Users, title: "Our Audience", desc: "Young Indians eager to learn & grow" },
               { icon: Sparkles, title: "Our Content", desc: "Engaging Hinglish articles on trending topics" },
-              { icon: Zap, title: "Our Vision", desc: "India ka #1 tech blog platform" },
+              { icon: Zap, title: "Our Vision", desc: "The #1 next-gen tech blog platform" },
             ].map(({ icon: Icon, title, desc }, i) => (
               <div
                 key={title}
