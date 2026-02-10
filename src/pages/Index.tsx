@@ -1,14 +1,25 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { ArrowRight, Sparkles, TrendingUp, Users } from "lucide-react";
-import heroImg from "@/assets/hero-bg.jpg";
 import BlogCard from "@/components/BlogCard";
 import Newsletter from "@/components/Newsletter";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { blogPosts } from "@/config/content";
+import { getBlogPosts } from "@/config/content";
 
 const Index = () => {
-  const featured = blogPosts.slice(0, 3);
+  const [featured, setFeatured] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadFeaturedPosts() {
+      setLoading(true);
+      const posts = await getBlogPosts();
+      setFeatured(posts.slice(0, 3));
+      setLoading(false);
+    }
+    loadFeaturedPosts();
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -17,7 +28,11 @@ const Index = () => {
       {/* Hero */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-16">
         <div className="absolute inset-0">
-          <img src="https://res.cloudinary.com/ddi8qw8fw/image/upload/v1770737413/nexblog_et3dga.png" alt="" className="w-full h-full object-cover opacity-40" />
+          <img 
+            src="https://res.cloudinary.com/ddi8qw8fw/image/upload/v1770737413/nexblog_et3dga.png" 
+            alt="" 
+            className="w-full h-full object-cover opacity-40" 
+          />
           <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background" />
         </div>
 
@@ -33,12 +48,18 @@ const Index = () => {
             Blog Platform
           </h1>
 
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 opacity-0 animate-fade-in" style={{ animationDelay: "200ms", animationFillMode: "forwards" }}>
+          <p 
+            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 opacity-0 animate-fade-in" 
+            style={{ animationDelay: "200ms", animationFillMode: "forwards" }}
+          >
             AI, Technology, Digital Growth and future trends — all in one place.
             Read, learn and grow! 🚀
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center opacity-0 animate-fade-in" style={{ animationDelay: "400ms", animationFillMode: "forwards" }}>
+          <div 
+            className="flex flex-col sm:flex-row gap-4 justify-center opacity-0 animate-fade-in" 
+            style={{ animationDelay: "400ms", animationFillMode: "forwards" }}
+          >
             <Link
               to="/blogs"
               className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold inline-flex items-center justify-center gap-2 hover:opacity-90 transition-opacity glow-cyan"
@@ -89,11 +110,17 @@ const Index = () => {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featured.map((post, i) => (
-              <BlogCard key={post.id} post={post} index={i} />
-            ))}
-          </div>
+          {loading ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">Loading posts...</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featured.map((post, i) => (
+                <BlogCard key={post.id} post={post} index={i} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Link } from "react-router-dom";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 import type { BlogPost } from "@/config/content";
@@ -7,7 +8,7 @@ interface BlogCardProps {
   index?: number;
 }
 
-const BlogCard = ({ post, index = 0 }: BlogCardProps) => {
+const BlogCard = memo(({ post, index = 0 }: BlogCardProps) => {
   return (
     <Link
       to={`/blog/${post.id}`}
@@ -15,13 +16,16 @@ const BlogCard = ({ post, index = 0 }: BlogCardProps) => {
       style={{ animationDelay: `${index * 100}ms`, animationFillMode: "forwards" }}
     >
       <article className="glass rounded-xl overflow-hidden hover-glow transition-all duration-500 group-hover:border-primary/30 h-full flex flex-col">
-        {/* FIXED: Image positioning - object-top added */}
         <div className="relative overflow-hidden aspect-video">
           <img
             src={post.image}
             alt={post.title}
             loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
+            onError={(e) => {
+              e.currentTarget.src = 'https://via.placeholder.com/800x450/1a1a1a/666?text=Image+Not+Found';
+            }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
           <span className="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary border border-primary/30 backdrop-blur-sm">
@@ -56,6 +60,8 @@ const BlogCard = ({ post, index = 0 }: BlogCardProps) => {
       </article>
     </Link>
   );
-};
+});
+
+BlogCard.displayName = "BlogCard";
 
 export default BlogCard;
