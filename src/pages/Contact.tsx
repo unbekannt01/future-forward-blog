@@ -20,7 +20,7 @@ const Contact = () => {
           <h1 className="text-3xl md:text-4xl font-bold mb-2">
             Get in <span className="gradient-text">Touch</span>
           </h1>
-          <p className="text-muted-foreground text-sm mb-10">Koi sawal ya suggestion? Hum sunn rahe hain! 🎧</p>
+          <p className="text-muted-foreground text-sm mb-10">Have a question or suggestion? We're all ears! 🎧</p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
             {[
@@ -39,7 +39,7 @@ const Contact = () => {
           {submitted ? (
             <div className="glass rounded-xl p-8 text-center animate-fade-in">
               <p className="text-primary font-medium text-lg">✅ Message sent successfully!</p>
-              <p className="text-sm text-muted-foreground mt-2">Hum jald hi reply karenge!</p>
+              <p className="text-sm text-muted-foreground mt-2">We'll get back to you soon!</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="glass rounded-xl p-6 md:p-8 space-y-4 animate-fade-in" style={{ animationDelay: "200ms", animationFillMode: "forwards" }}>
