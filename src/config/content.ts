@@ -16,6 +16,7 @@ export interface BlogPost {
     slug: string;
   };
 }
+
 export interface Comment {
   id: string;
   author: string;
@@ -51,25 +52,32 @@ async function loadContent(): Promise<ContentData> {
   
   loadingPromise = (async () => {
     try {
-      // Production: Environment variable se load
-      const envContent = import.meta.env.VITE_CONTENT_JSON;
+      // 🌐 CDN URL (Production) - Environment variable se load karo
+      const CDN_URL = import.meta.env.VITE_CONTENT_CDN_URL;
       
-      if (envContent) {
-        console.log('📦 Loading from environment variable...');
-        const decoded = atob(envContent);
-        contentCache = JSON.parse(decoded);
-        return contentCache;
+      // Development: Local file
+      const isDev = import.meta.env.DEV;
+      const contentUrl = isDev ? '/content.json' : CDN_URL;
+      
+      if (!contentUrl) {
+        throw new Error('Content URL not configured');
       }
       
-      // Development: Local file se load
-      console.log('📁 Loading from local file...');
-      const response = await fetch('/content.json');
+      console.log(`📡 Loading content from: ${contentUrl}`);
+      
+      const response = await fetch(contentUrl, {
+        cache: 'force-cache', // Browser cache for speed
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
       
       if (!response.ok) {
-        throw new Error('Failed to load content.json');
+        throw new Error(`HTTP ${response.status}: Failed to load content`);
       }
       
       contentCache = await response.json();
+      console.log('✅ Content loaded successfully');
       return contentCache;
       
     } catch (error) {
