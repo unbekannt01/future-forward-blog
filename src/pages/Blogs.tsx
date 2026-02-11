@@ -21,7 +21,7 @@ const Blogs = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const debouncedSearch = useDebounce(search, 300);
 
-  // ✅ Dynamic SEO based on active category
+  // Dynamic SEO based on active category
   const categoryForSEO = activeCategory === "All" ? "" : ` – ${activeCategory}`;
   useSEO({
     title: `All Blogs${categoryForSEO} | NexBlog`,

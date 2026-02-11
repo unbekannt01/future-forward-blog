@@ -173,7 +173,7 @@ const BlogPost = () => {
         <div className="container mx-auto px-4 max-w-3xl">
           {/* ✅ Breadcrumb Navigation – SEO + UX */}
           <nav
-            className="flex items-center gap-1.5 text-xs text-muted-foreground mb-4 flex-wrap"
+            className="hidden md:flex items-center gap-1.5 text-xs text-muted-foreground mb-4 flex-wrap"
             aria-label="Breadcrumb"
           >
             <Link
