@@ -6,33 +6,45 @@ const Newsletter = () => {
   const [name, setName] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!email) return;
 
     setIsSubmitting(true);
-
-    const form = e.currentTarget;
-    const formData = new FormData(form);
+    setError("");
 
     try {
-      await fetch(form.action, {
-        method: 'POST',
-        body: formData,
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
         headers: {
-          'Accept': 'application/json'
-        }
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
+          from_name: "NexBlog Newsletter",
+          subject: "🎉 New Newsletter Subscription",
+          name: name || "Anonymous",
+          email: email,
+          message: `New subscriber: ${name || "Anonymous"} (${email})`,
+        }),
       });
 
-      setSubmitted(true);
-      setEmail("");
-      setName("");
-      
-      // Reset after 5 seconds
-      setTimeout(() => setSubmitted(false), 5000);
-    } catch (error) {
-      console.error('Newsletter subscription error:', error);
+      const result = await response.json();
+
+      if (result.success) {
+        setSubmitted(true);
+        setEmail("");
+        setName("");
+        setTimeout(() => setSubmitted(false), 6000);
+      } else {
+        setError("Something went wrong. Please try again!");
+      }
+    } catch (err) {
+      console.error("Newsletter subscription error:", err);
+      setError("Network error. Please try again!");
     } finally {
       setIsSubmitting(false);
     }
@@ -58,47 +70,13 @@ const Newsletter = () => {
                   <p className="font-medium text-lg">Subscribed successfully!</p>
                 </div>
                 <p className="text-muted-foreground text-sm">
-                  Check your email for a welcome message! 📧
+                  Thank you for joining our community! 🎉
                 </p>
               </div>
             ) : (
-              <form 
-                onSubmit={handleSubmit}
-                action="https://formsubmit.co/testing.buddy1111@gmail.com"
-                method="POST"
-                className="space-y-3 max-w-md mx-auto"
-              >
-                {/* FormSubmit Configuration */}
-                <input type="hidden" name="_subject" value="🎉 New Newsletter Subscription - NexBlog" />
-                <input type="hidden" name="_captcha" value="false" />
-                <input type="hidden" name="_template" value="box" />
-                <input type="hidden" name="_next" value={window.location.href} />
-                <input 
-                  type="hidden" 
-                  name="_autoresponse" 
-                  value="🎉 Welcome to NexBlog Newsletter!
-
-Thank you for subscribing to NexBlog! 
-
-You're now part of our community of tech enthusiasts, AI learners, and digital growth seekers. 🚀
-
-What to expect:
-✅ Weekly insights on AI & Technology
-✅ Digital growth tips and strategies
-✅ Latest tech trends and innovations
-✅ Exclusive content before anyone else
-
-Your first newsletter will arrive this week!
-
-Stay curious, stay ahead! 💡
-
-- The NexBlog Team
-https://nexblog.vercel.app" 
-                />
-
+              <form onSubmit={handleSubmit} className="space-y-3 max-w-md mx-auto">
                 <input
                   type="text"
-                  name="Name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Your name (optional)"
@@ -109,7 +87,6 @@ https://nexblog.vercel.app"
                 <div className="flex flex-col sm:flex-row gap-3">
                   <input
                     type="email"
-                    name="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email"
@@ -134,6 +111,10 @@ https://nexblog.vercel.app"
                     )}
                   </button>
                 </div>
+
+                {error && (
+                  <p className="text-red-400 text-xs text-center">{error}</p>
+                )}
 
                 <p className="text-xs text-muted-foreground">
                   We respect your privacy. Unsubscribe anytime. 🔒

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Send, Mail, MapPin, Phone, Loader2 } from "lucide-react";
+import { Send, Mail, MapPin, Loader2 } from "lucide-react";
 
 const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -43,11 +43,10 @@ const Contact = () => {
           </h1>
           <p className="text-muted-foreground text-sm mb-10">Have a question or suggestion? We're all ears! 🎧</p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10 max-w-lg mx-auto">
             {[
-              { icon: Mail, label: "Email", value: "hello@NexBlog.in" },
-              { icon: MapPin, label: "Location", value: "New Delhi, India" },
-              { icon: Phone, label: "Phone", value: "+91 98765 43210" },
+              { icon: Mail, label: "Email", value: "testing.buddy1111@gmail.com" },
+              { icon: MapPin, label: "Location", value: "India" },
             ].map(({ icon: Icon, label, value }, i) => (
               <div key={label} className="glass rounded-xl p-5 text-center opacity-0 animate-fade-in" style={{ animationDelay: `${i * 100}ms`, animationFillMode: "forwards" }}>
                 <Icon className="w-5 h-5 text-primary mx-auto mb-2" />

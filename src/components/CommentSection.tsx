@@ -6,13 +6,15 @@ const initialComments: Comment[] = [
   {
     id: "1",
     author: "Rahul Kumar",
-    content: "What an amazing article! First time I've read about AI in such detail. Keep it up! 🔥",
+    content:
+      "What an amazing article! First time I've read about AI in such detail. Keep it up! 🔥",
     date: "2026-02-09",
   },
   {
     id: "2",
     author: "Sneha Patel",
-    content: "This is exactly what I needed! Very informative and easy to understand. More articles please! 💡",
+    content:
+      "This is exactly what I needed! Very informative and easy to understand. More articles please! 💡",
     date: "2026-02-08",
   },
 ];
@@ -42,7 +44,7 @@ const CommentSection = ({ postTitle = "Blog Post" }: CommentSectionProps) => {
       content: text,
       date: new Date().toISOString().split("T")[0],
     };
-    
+
     setComments([newComment, ...comments]);
 
     // 2. Send email via FormSubmit (HTML form submission)
@@ -51,17 +53,17 @@ const CommentSection = ({ postTitle = "Blog Post" }: CommentSectionProps) => {
 
     try {
       await fetch(form.action, {
-        method: 'POST',
+        method: "POST",
         body: formData,
         headers: {
-          'Accept': 'application/json'
-        }
+          Accept: "application/json",
+        },
       });
 
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 3000);
     } catch (error) {
-      console.log('Email send error (comment still posted):', error);
+      console.log("Email send error (comment still posted):", error);
     } finally {
       setIsSubmitting(false);
       // Clear form
@@ -74,22 +76,32 @@ const CommentSection = ({ postTitle = "Blog Post" }: CommentSectionProps) => {
   return (
     <section className="mt-12">
       <h3 className="text-xl font-bold mb-6">
-        Comments <span className="text-muted-foreground text-sm font-normal">({comments.length})</span>
+        Comments{" "}
+        <span className="text-muted-foreground text-sm font-normal">
+          ({comments.length})
+        </span>
       </h3>
 
       {/* FormSubmit HTML Form */}
-      <form 
+      <form
         onSubmit={handleSubmit}
         action="https://formsubmit.co/testing.buddy1111@gmail.com"
         method="POST"
         className="glass rounded-xl p-5 mb-8 space-y-3"
       >
         {/* FormSubmit Configuration (hidden fields) */}
-        <input type="hidden" name="_subject" value={`💬 New Comment on: ${postTitle}`} />
+        <input
+          type="hidden"
+          name="_subject"
+          value={`💬 New Comment on: ${postTitle}`}
+        />
         <input type="hidden" name="_captcha" value="false" />
         <input type="hidden" name="_template" value="box" />
-        <input type="hidden" name="_next" value={window.location.href} />
-        <input type="hidden" name="_autoresponse" value="Thank you for your comment! We've received it." />
+        <input
+          type="hidden"
+          name="_autoresponse"
+          value="Thank you for your comment! We've received it."
+        />
         <input type="hidden" name="Post Title" value={postTitle} />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -114,7 +126,7 @@ const CommentSection = ({ postTitle = "Blog Post" }: CommentSectionProps) => {
             className="w-full px-4 py-2.5 rounded-lg bg-muted border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 text-sm disabled:opacity-50"
           />
         </div>
-        
+
         <textarea
           name="Comment"
           value={text}
@@ -160,10 +172,18 @@ const CommentSection = ({ postTitle = "Blog Post" }: CommentSectionProps) => {
               </div>
               <div>
                 <p className="text-sm font-medium">{c.author}</p>
-                <p className="text-xs text-muted-foreground">{new Date(c.date).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</p>
+                <p className="text-xs text-muted-foreground">
+                  {new Date(c.date).toLocaleDateString("en-IN", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </p>
               </div>
             </div>
-            <p className="text-sm text-muted-foreground leading-relaxed">{c.content}</p>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {c.content}
+            </p>
           </div>
         ))}
       </div>
