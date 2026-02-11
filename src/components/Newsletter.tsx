@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Send, Loader2, CheckCircle } from "lucide-react";
+import { Send, CheckCircle } from "lucide-react";
 
 const Newsletter = () => {
   const [email, setEmail] = useState("");
@@ -16,25 +16,24 @@ const Newsletter = () => {
     setError("");
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
-          from_name: "NexBlog Newsletter",
-          subject: "🎉 New Newsletter Subscription",
-          name: name || "Anonymous",
-          email: email,
-          message: `New subscriber: ${name || "Anonymous"} (${email})`,
-        }),
-      });
+      const formData = new FormData();
+      formData.append("name", name || "Anonymous");
+      formData.append("email", email);
+      formData.append("_subject", "🎉 New Newsletter Subscription");
+      formData.append("_template", "table");
+      formData.append("_captcha", "false");
+
+      const response = await fetch(
+        "https://formsubmit.co/ajax/testing.buddy1111@gmail.com",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const result = await response.json();
 
-      if (result.success) {
+      if (result.success === "true" || result.success === true) {
         setSubmitted(true);
         setEmail("");
         setName("");
@@ -60,21 +59,27 @@ const Newsletter = () => {
               Stay <span className="gradient-text">Ahead</span> of the Curve
             </h2>
             <p className="text-muted-foreground mb-6 text-sm">
-              Weekly insights on AI, tech, and digital growth — delivered straight to your inbox! 🚀
+              Weekly insights on AI, tech, and digital growth — delivered straight
+              to your inbox! 🚀
             </p>
 
             {submitted ? (
               <div className="animate-fade-in space-y-2">
                 <div className="flex items-center justify-center gap-2 text-green-500">
                   <CheckCircle className="w-5 h-5" />
-                  <p className="font-medium text-lg">Subscribed successfully!</p>
+                  <p className="font-medium text-lg">
+                    Thank you for subscribing!
+                  </p>
                 </div>
                 <p className="text-muted-foreground text-sm">
-                  Thank you for joining our community! 🎉
+                  You'll receive our latest updates soon! 🎉
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-3 max-w-md mx-auto">
+              <form
+                onSubmit={handleSubmit}
+                className="space-y-3 max-w-md mx-auto"
+              >
                 <input
                   type="text"
                   value={name}
@@ -101,7 +106,7 @@ const Newsletter = () => {
                   >
                     {isSubmitting ? (
                       <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                         Subscribing...
                       </>
                     ) : (
