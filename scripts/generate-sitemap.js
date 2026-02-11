@@ -35,4 +35,4 @@ fs.writeFileSync(
   sitemap.trim()
 );
 
-console.log("✅ sitemap.xml generated successfully");
+console.log("sitemap.xml generated successfully");
