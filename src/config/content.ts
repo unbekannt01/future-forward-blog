@@ -62,9 +62,7 @@ async function loadContent(): Promise<ContentData> {
       if (!contentUrl) {
         throw new Error('Content URL not configured');
       }
-      
-      console.log(`📡 Loading content from: ${contentUrl}`);
-      
+            
       const response = await fetch(contentUrl, {
         cache: 'force-cache', // Browser cache for speed
         headers: {
@@ -77,7 +75,6 @@ async function loadContent(): Promise<ContentData> {
       }
       
       contentCache = await response.json();
-      console.log('✅ Content loaded successfully');
       return contentCache;
       
     } catch (error) {
