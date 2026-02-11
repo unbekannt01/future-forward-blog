@@ -36,57 +36,88 @@ interface ContentData {
   blogPosts: BlogPost[];
 }
 
+// ------------------------------
+// ⚡ High Performance Cache Setup
+// ------------------------------
+
 let contentCache: ContentData | null = null;
+let cacheTime = 0;
+
+// ⏳ Cache TTL (Best for blogs: 1–5 min)
+const CACHE_TTL = 60 * 1000; // 1 minute
+
 let loadingPromise: Promise<ContentData> | null = null;
 
+// ------------------------------
+// 🚀 Smart Loader (Fast + Safe)
+// ------------------------------
+
 async function loadContent(): Promise<ContentData> {
-  // ✅ Instant return if already cached
-  if (contentCache) {
-    return Promise.resolve(contentCache);
+  const now = Date.now();
+
+  // Serve fast cache if valid
+  if (contentCache && now - cacheTime < CACHE_TTL) {
+    return contentCache;
   }
-  
-  // ✅ Avoid duplicate fetch calls
+
+  // Avoid duplicate parallel calls
   if (loadingPromise) {
     return loadingPromise;
   }
-  
+
   loadingPromise = (async () => {
     try {
-      // 🌐 CDN URL (Production) - Environment variable se load karo
       const CDN_URL = import.meta.env.VITE_CONTENT_CDN_URL;
-      
-      // Development: Local file
       const isDev = import.meta.env.DEV;
-      const contentUrl = isDev ? '/content.json' : CDN_URL;
-      
+
+      const contentUrl = isDev
+        ? '/content.json'
+        : `${CDN_URL}?t=${Date.now()}`; // Cache-bypass
+
       if (!contentUrl) {
-        throw new Error('Content URL not configured');
+        throw new Error('Content CDN URL missing');
       }
-            
-      const response = await fetch(contentUrl, {
-        cache: 'force-cache', // Browser cache for speed
+
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 8000);
+
+      const res = await fetch(contentUrl, {
+        cache: 'no-store',
+        signal: controller.signal,
         headers: {
           'Accept': 'application/json'
         }
       });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: Failed to load content`);
+
+      clearTimeout(timeout);
+
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
       }
-      
-      contentCache = await response.json();
-      return contentCache;
-      
-    } catch (error) {
-      console.error('❌ Error loading content:', error);
-      
-      // Fallback data
+
+      const data = await res.json();
+
+      contentCache = data;
+      cacheTime = now;
+
+      return data;
+
+    } catch (err) {
+      console.error('❌ CDN Load Failed:', err);
+
+      // Return old cache if available (offline-safe UX)
+      if (contentCache) {
+        console.warn('⚠️ Serving stale cached data');
+        return contentCache;
+      }
+
+      // Emergency fallback
       return {
         siteConfig: {
           name: "NexBlog",
-          tagline: "Blog Platform",
+          tagline: "Tech Insights",
           author: "NexBlog Team",
-          description: "Tech Blog"
+          description: "High quality technical blogs"
         },
         categories: ["All"],
         blogPosts: []
@@ -95,49 +126,49 @@ async function loadContent(): Promise<ContentData> {
       loadingPromise = null;
     }
   })();
-  
+
   return loadingPromise;
 }
 
-// ✅ Export functions with optimized caching
+// ------------------------------
+// 📦 Public APIs (Optimized)
+// ------------------------------
+
 export async function getSiteConfig() {
-  const data = await loadContent();
-  return data.siteConfig;
+  return (await loadContent()).siteConfig;
 }
 
 export async function getCategories() {
-  const data = await loadContent();
-  return data.categories;
+  return (await loadContent()).categories;
 }
 
 export async function getBlogPosts() {
-  const data = await loadContent();
-  return data.blogPosts;
+  return (await loadContent()).blogPosts;
 }
 
-export async function getPostsByCategory(category: string): Promise<BlogPost[]> {
-  const data = await loadContent();
-  if (category === "All") return data.blogPosts;
-  return data.blogPosts.filter(post => post.category === category);
+export async function getPostsByCategory(category: string) {
+  const posts = (await loadContent()).blogPosts;
+  if (category === "All") return posts;
+  return posts.filter(p => p.category === category);
 }
 
-export async function getPostById(id: string): Promise<BlogPost | undefined> {
-  const data = await loadContent();
-  return data.blogPosts.find(post => post.id === id);
+export async function getPostById(id: string) {
+  return (await loadContent()).blogPosts.find(p => p.id === id);
 }
 
-export async function searchPosts(query: string): Promise<BlogPost[]> {
-  const data = await loadContent();
+export async function searchPosts(query: string) {
   const lower = query.toLowerCase();
-  return data.blogPosts.filter(
-    post =>
-      post.title.toLowerCase().includes(lower) ||
-      post.excerpt.toLowerCase().includes(lower) ||
-      post.tags.some(tag => tag.toLowerCase().includes(lower))
+  return (await loadContent()).blogPosts.filter(p =>
+    p.title.toLowerCase().includes(lower) ||
+    p.excerpt.toLowerCase().includes(lower) ||
+    p.tags.some(tag => tag.toLowerCase().includes(lower))
   );
 }
 
-// ✅ Preload function - app start pe hi load karo
+// ------------------------------
+// 🚀 Preload for Ultra-fast UX
+// ------------------------------
+
 export function preloadContent() {
-  loadContent().catch(console.error);
+  loadContent().catch(() => {});
 }
