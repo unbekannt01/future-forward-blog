@@ -102,13 +102,13 @@ const BlogPost = () => {
     .split("\n")
     .map((line: string) => {
       if (line.startsWith("### "))
-        return `<h3 class="text-lg font-bold mt-6 mb-2 text-foreground">${line.slice(4)}</h3>`;
+        return `<h3 class="text-lg font-semibold mt-6 mb-3 text-foreground">${line.slice(4)}</h3>`;
       if (line.startsWith("## "))
-        return `<h2 class="text-xl font-bold mt-8 mb-3 gradient-text">${line.slice(3)}</h2>`;
+        return `<h2 class="text-xl font-semibold mt-7 mb-3 text-primary">${line.slice(3)}</h2>`;
       if (line.startsWith("> "))
         return `<blockquote class="border-l-2 border-primary pl-4 my-4 text-muted-foreground italic">${line.slice(2)}</blockquote>`;
       if (line.startsWith("**") && line.endsWith("**") && !line.includes(" "))
-        return `<p class="font-semibold text-foreground mt-4 mb-1">${line.slice(2, -2)}</p>`;
+        return `<p class="font-medium text-foreground mt-4 mb-2">${line.slice(2, -2)}</p>`;
       if (line.startsWith("- "))
         return `<li data-list="bullet" class="text-muted-foreground ml-6 list-disc leading-relaxed">${line.slice(2)}</li>`;
       if (/^\d+\.\s/.test(line))
@@ -127,7 +127,7 @@ const BlogPost = () => {
       ${cells
         .map(
           (cell) =>
-            `<th class="border border-border px-4 py-2 text-left font-semibold">${cell}</th>`,
+            `<th class="border border-border px-4 py-2 text-left font-medium">${cell}</th>`,
         )
         .join("")}
     </tr>`;
@@ -146,9 +146,9 @@ const BlogPost = () => {
       if (line.trim() === "") return "<br/>";
       const processedLine = line.replace(
         /\*\*(.+?)\*\*/g,
-        '<strong class="font-semibold">$1</strong>',
+        '<strong class="font-medium">$1</strong>',
       );
-      return `<p class="text-muted-foreground leading-relaxed">${processedLine}</p>`;
+      return `<p class="text-muted-foreground leading-relaxed mb-3">${processedLine}</p>`;
     })
     .join("");
 
@@ -283,7 +283,7 @@ const BlogPost = () => {
 
             {/* First half of content */}
             <div
-              className="prose-custom"
+              className="prose-custom text-base"
               dangerouslySetInnerHTML={{ __html: firstHalf }}
             />
 
@@ -297,7 +297,7 @@ const BlogPost = () => {
 
             {/* Second half of content */}
             <div
-              className="prose-custom"
+              className="prose-custom text-base"
               dangerouslySetInnerHTML={{ __html: secondHalf }}
               itemProp="articleBody"
             />
