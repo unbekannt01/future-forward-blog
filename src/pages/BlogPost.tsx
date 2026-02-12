@@ -1,5 +1,6 @@
 // src/pages/BlogPost.tsx  ← REPLACE your existing file with this
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import AdSense from "@/components/AdSense";
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
@@ -165,6 +166,12 @@ const BlogPost = () => {
   );
   finalHtml = finalHtml.replace(/ data-list="(bullet|numbered)"/g, "");
 
+  // ✅ Split content into two halves for mid-article ad
+  const htmlArray = finalHtml.split(/<\/p>|<\/h2>|<\/h3>/);
+  const midPoint = Math.floor(htmlArray.length / 2);
+  const firstHalf = htmlArray.slice(0, midPoint).join("</p>") + "</p>";
+  const secondHalf = htmlArray.slice(midPoint).join("</p>");
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -206,6 +213,9 @@ const BlogPost = () => {
             <ArrowLeft className="w-4 h-4" /> Back to Blogs
           </Link>
 
+          {/* 🎯 Ad #1 - Before Article (Top performing position) */}
+          {/* <AdSense adSlot="1111111111" adFormat="auto" className="mb-6" /> */}
+
           <article
             className="animate-fade-in"
             itemScope
@@ -222,6 +232,13 @@ const BlogPost = () => {
                 itemProp="image"
               />
             </div>
+
+            {/* 🎯 Ad #2 - After Image (High visibility) */}
+            {/* <AdSense
+              adSlot="2222222222"
+              adFormat="rectangle"
+              className="my-6"
+            /> */}
 
             <span
               className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary border border-primary/30 mb-4"
@@ -264,9 +281,24 @@ const BlogPost = () => {
               </span>
             </div>
 
+            {/* First half of content */}
             <div
               className="prose-custom"
-              dangerouslySetInnerHTML={{ __html: finalHtml }}
+              dangerouslySetInnerHTML={{ __html: firstHalf }}
+            />
+
+            {/* 🎯 Ad #3 - Mid-Article (Best for engagement) */}
+            {/* <AdSense
+              adSlot="3333333333"
+              adFormat="fluid"
+              adLayout="in-article"
+              className="my-8"
+            /> */}
+
+            {/* Second half of content */}
+            <div
+              className="prose-custom"
+              dangerouslySetInnerHTML={{ __html: secondHalf }}
               itemProp="articleBody"
             />
 
@@ -285,6 +317,9 @@ const BlogPost = () => {
               ))}
             </div>
           </article>
+
+          {/* 🎯 Ad #4 - After Article (Before Comments) */}
+          {/* <AdSense adSlot="4444444444" adFormat="auto" className="mt-8 mb-6" /> */}
 
           <CommentSection postTitle={post.title} />
         </div>

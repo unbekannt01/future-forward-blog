@@ -3,6 +3,7 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { ArrowRight, Sparkles, TrendingUp, Users } from "lucide-react";
+import AdSense from "@/components/AdSense";
 import BlogCard from "@/components/BlogCard";
 import Newsletter from "@/components/Newsletter";
 import Footer from "@/components/Footer";
@@ -17,8 +18,15 @@ const Index = () => {
   // ✅ SEO for Homepage
   useSEO({
     title: "NexBlog – AI, Technology & Digital Growth Insights",
-    description: "NexBlog covers AI, Technology, Digital Growth, Online Earning, Social Media & Future Trends. Stay ahead with next-gen insights in easy Hinglish. Read, Learn & Grow! 🚀",
-    keywords: ["AI blog India", "technology insights", "digital growth tips", "online earning guide", "future trends 2025"],
+    description:
+      "NexBlog covers AI, Technology, Digital Growth, Online Earning, Social Media & Future Trends. Stay ahead with next-gen insights in easy Hinglish. Read, Learn & Grow! 🚀",
+    keywords: [
+      "AI blog India",
+      "technology insights",
+      "digital growth tips",
+      "online earning guide",
+      "future trends 2025",
+    ],
     url: "/",
     type: "website",
   });
@@ -40,10 +48,10 @@ const Index = () => {
       {/* ✅ Hero with proper H1 for SEO */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-16">
         <div className="absolute inset-0">
-          <img 
-            src="https://res.cloudinary.com/ddi8qw8fw/image/upload/v1770737413/nexblog_et3dga.png" 
-            alt="NexBlog – Next Generation Tech Blog Platform" 
-            className="w-full h-full object-cover opacity-40" 
+          <img
+            src="https://res.cloudinary.com/ddi8qw8fw/image/upload/v1770737413/nexblog_et3dga.png"
+            alt="NexBlog – Next Generation Tech Blog Platform"
+            className="w-full h-full object-cover opacity-40"
             width="1920"
             height="1080"
           />
@@ -63,16 +71,16 @@ const Index = () => {
             Blog Platform
           </h1>
 
-          <p 
-            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 opacity-0 animate-fade-in" 
+          <p
+            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 opacity-0 animate-fade-in"
             style={{ animationDelay: "200ms", animationFillMode: "forwards" }}
           >
             AI, Technology, Digital Growth aur future trends — sab ek jagah.
             Read, learn aur grow karo! 🚀
           </p>
 
-          <div 
-            className="flex flex-col sm:flex-row gap-4 justify-center opacity-0 animate-fade-in" 
+          <div
+            className="flex flex-col sm:flex-row gap-4 justify-center opacity-0 animate-fade-in"
             style={{ animationDelay: "400ms", animationFillMode: "forwards" }}
           >
             <Link
@@ -93,8 +101,22 @@ const Index = () => {
         </div>
       </section>
 
+      {/* 🎯 Ad #1 - After Hero Section (Prime position) */}
+      {/* <section className="py-8 border-y border-border">
+        <div className="container mx-auto px-4">
+          <AdSense
+            adSlot="7777777777"
+            adFormat="auto"
+            className="max-w-4xl mx-auto"
+          />
+        </div>
+      </section> */}
+
       {/* Stats */}
-      <section className="py-16 border-y border-border" aria-label="NexBlog statistics">
+      <section
+        className="py-16 border-b border-border"
+        aria-label="NexBlog statistics"
+      >
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto text-center">
             {[
@@ -120,9 +142,15 @@ const Index = () => {
               <h2 className="text-2xl md:text-3xl font-bold">
                 Latest <span className="gradient-text">Posts</span>
               </h2>
-              <p className="text-sm text-muted-foreground mt-1">Fresh content every week</p>
+              <p className="text-sm text-muted-foreground mt-1">
+                Fresh content every week
+              </p>
             </div>
-            <Link to="/blogs" className="text-sm text-primary flex items-center gap-1 hover:underline" aria-label="View all blog posts">
+            <Link
+              to="/blogs"
+              className="text-sm text-primary flex items-center gap-1 hover:underline"
+              aria-label="View all blog posts"
+            >
               View All <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
@@ -132,11 +160,20 @@ const Index = () => {
               <p className="text-muted-foreground">Loading posts...</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {featured.map((post, i) => (
-                <BlogCard key={post.id} post={post} index={i} />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {featured.map((post, i) => (
+                  <BlogCard key={post.id} post={post} index={i} />
+                ))}
+              </div>
+
+              {/* 🎯 Ad #2 - After Featured Posts */}
+              <AdSense
+                adSlot="8888888888"
+                adFormat="horizontal"
+                className="mt-12"
+              />
+            </>
           )}
         </div>
       </section>

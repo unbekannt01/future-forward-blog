@@ -2,13 +2,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
+import AdSense from "@/components/AdSense";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BlogCard from "@/components/BlogCard";
 import SearchBar from "@/components/SearchBar";
 import CategoryFilter from "@/components/CategoryFilter";
 import { useDebounce } from "@/hooks/useDebounce";
-import { getBlogPosts, getCategories, searchPosts, getPostsByCategory } from "@/config/content";
+import {
+  getBlogPosts,
+  getCategories,
+  searchPosts,
+  getPostsByCategory,
+} from "@/config/content";
 import { useSEO } from "@/hooks/useSEO";
 
 const Blogs = () => {
@@ -25,17 +31,28 @@ const Blogs = () => {
   const categoryForSEO = activeCategory === "All" ? "" : ` – ${activeCategory}`;
   useSEO({
     title: `All Blogs${categoryForSEO} | NexBlog`,
-    description: activeCategory === "All"
-      ? "Browse all blog posts on NexBlog. Explore AI, Technology, Digital Growth, Online Earning, Social Media & Future Trends articles. 🚀"
-      : `Read all ${activeCategory} articles on NexBlog. Stay updated with the latest ${activeCategory} insights and tips!`,
-    keywords: ["blog posts India", "tech articles", activeCategory !== "All" ? activeCategory : "all blogs"].filter(Boolean),
-    url: activeCategory === "All" ? "/blogs" : `/blogs?category=${encodeURIComponent(activeCategory)}`,
+    description:
+      activeCategory === "All"
+        ? "Browse all blog posts on NexBlog. Explore AI, Technology, Digital Growth, Online Earning, Social Media & Future Trends articles. 🚀"
+        : `Read all ${activeCategory} articles on NexBlog. Stay updated with the latest ${activeCategory} insights and tips!`,
+    keywords: [
+      "blog posts India",
+      "tech articles",
+      activeCategory !== "All" ? activeCategory : "all blogs",
+    ].filter(Boolean),
+    url:
+      activeCategory === "All"
+        ? "/blogs"
+        : `/blogs?category=${encodeURIComponent(activeCategory)}`,
   });
 
   useEffect(() => {
     async function loadData() {
       setLoading(true);
-      const [allPosts, allCategories] = await Promise.all([getBlogPosts(), getCategories()]);
+      const [allPosts, allCategories] = await Promise.all([
+        getBlogPosts(),
+        getCategories(),
+      ]);
       setPosts(allPosts);
       setCategories(allCategories);
       const categoryFromURL = searchParams.get("category");
@@ -82,7 +99,9 @@ const Blogs = () => {
             <div className="absolute inset-0 border-4 border-primary/30 rounded-full"></div>
             <div className="absolute inset-0 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
           </div>
-          <p className="text-sm text-muted-foreground animate-pulse">Loading blogs...</p>
+          <p className="text-sm text-muted-foreground animate-pulse">
+            Loading blogs...
+          </p>
         </div>
       </div>
     );
@@ -97,9 +116,14 @@ const Blogs = () => {
             {/* ✅ H1 with keyword */}
             <h1 className="text-3xl md:text-4xl font-bold mb-2">
               {activeCategory === "All" ? (
-                <>All <span className="gradient-text">Blogs</span></>
+                <>
+                  All <span className="gradient-text">Blogs</span>
+                </>
               ) : (
-                <><span className="gradient-text">{activeCategory}</span> Articles</>
+                <>
+                  <span className="gradient-text">{activeCategory}</span>{" "}
+                  Articles
+                </>
               )}
             </h1>
             <p className="text-muted-foreground text-sm">
@@ -123,24 +147,44 @@ const Blogs = () => {
 
           {!search && (
             <div className="mb-8">
-              <CategoryFilter categories={categories} active={activeCategory} onChange={handleCategoryChange} />
+              <CategoryFilter
+                categories={categories}
+                active={activeCategory}
+                onChange={handleCategoryChange}
+              />
             </div>
           )}
+
+          {/* 🎯 Ad #1 - After Search/Filters (Top position) */}
+          <AdSense adSlot="5555555555" adFormat="horizontal" className="mb-8" />
 
           {displayedPosts.length === 0 ? (
             <div className="text-center py-20">
               <div className="text-6xl mb-4">😕</div>
-              <p className="text-lg text-muted-foreground mb-2">No results found</p>
-              <p className="text-sm text-muted-foreground">Try different keywords!</p>
+              <p className="text-lg text-muted-foreground mb-2">
+                No results found
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Try different keywords!
+              </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Blog posts">
-              {displayedPosts.map((post, i) => (
-                <div key={post.id} role="listitem">
-                  <BlogCard post={post} index={i} />
-                </div>
-              ))}
-            </div>
+            <>
+              <div
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                role="list"
+                aria-label="Blog posts"
+              >
+                {displayedPosts.map((post, i) => (
+                  <div key={post.id} role="listitem">
+                    <BlogCard post={post} index={i} />
+                  </div>
+                ))}
+              </div>
+
+              {/* 🎯 Ad #2 - After Blog Grid (Bottom position) */}
+              <AdSense adSlot="6666666666" adFormat="auto" className="mt-12" />
+            </>
           )}
         </div>
       </main>
