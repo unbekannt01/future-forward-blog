@@ -21,23 +21,6 @@ const Footer = () => {
               Next generation blog platform covering AI, Technology, Digital Growth and much more.
               Stay ahead with the future! 🚀
             </p>
-            {/* Social handles hidden for now */}
-            {/* <div className="flex gap-3 mt-4">
-              {[
-                { icon: Twitter, href: "#" },
-                { icon: Instagram, href: "#" },
-                { icon: Linkedin, href: "#" },
-                { icon: Github, href: "#" },
-              ].map(({ icon: Icon, href }, i) => (
-                <a
-                  key={i}
-                  href={href}
-                  className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
-                >
-                  <Icon className="w-4 h-4" />
-                </a>
-              ))}
-            </div> */}
           </div>
 
           <div>
@@ -75,9 +58,37 @@ const Footer = () => {
 
         <div className="neon-line mt-8 mb-6" />
 
-        <p className="text-center text-xs text-muted-foreground flex items-center justify-center gap-1">
-          Made with <Heart className="w-3 h-3 text-secondary" /> by NexBlog Team © {new Date().getFullYear()}
-        </p>
+        {/* Legal Links Row */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-xs text-muted-foreground flex items-center gap-1">
+            Made with <Heart className="w-3 h-3 text-secondary" /> by NexBlog Team © {new Date().getFullYear()}
+          </p>
+          <div className="flex items-center gap-4">
+            <Link
+              to="/privacy-policy"
+              onClick={scrollToTop}
+              className="text-xs text-muted-foreground hover:text-primary transition-colors"
+            >
+              Privacy Policy
+            </Link>
+            <span className="text-muted-foreground text-xs">·</span>
+            <Link
+              to="/terms-of-service"
+              onClick={scrollToTop}
+              className="text-xs text-muted-foreground hover:text-primary transition-colors"
+            >
+              Terms of Service
+            </Link>
+            <span className="text-muted-foreground text-xs">·</span>
+            <Link
+              to="/contact"
+              onClick={scrollToTop}
+              className="text-xs text-muted-foreground hover:text-primary transition-colors"
+            >
+              Contact
+            </Link>
+          </div>
+        </div>
       </div>
     </footer>
   );
