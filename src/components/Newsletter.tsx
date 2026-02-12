@@ -24,7 +24,7 @@ const Newsletter = () => {
       formData.append("_captcha", "false");
 
       const response = await fetch(
-        "https://formsubmit.co/ajax/testing.buddy1111@gmail.com",
+        "https://formsubmit.co/testing.buddy1111@gmail.com",
         {
           method: "POST",
           body: formData,
