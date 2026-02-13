@@ -75,8 +75,8 @@ const Index = () => {
             className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 opacity-0 animate-fade-in"
             style={{ animationDelay: "200ms", animationFillMode: "forwards" }}
           >
-            AI, Technology, Digital Growth aur future trends — sab ek jagah.
-            Read, learn aur grow karo! 🚀
+            AI, Technology, Digital Growth, and future trends — all in one
+            place. Read, learn, and grow! 🚀
           </p>
 
           <div
@@ -120,8 +120,8 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto text-center">
             {[
-              { icon: Sparkles, label: "Blog Posts", value: "50+" },
-              { icon: Users, label: "Monthly Readers", value: "10K+" },
+              { icon: Sparkles, label: "Blog Posts", value: "10+" },
+              { icon: Users, label: "Monthly Readers", value: "5K+" },
               { icon: TrendingUp, label: "Categories", value: "6" },
             ].map(({ icon: Icon, label, value }, i) => (
               <div key={i} className="flex flex-col items-center gap-2">
