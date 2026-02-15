@@ -28,12 +28,10 @@ const Newsletter = () => {
         {
           method: "POST",
           body: formData,
-        }
+        },
       );
 
-      const result = await response.json();
-
-      if (result.success === "true" || result.success === true) {
+      if (response.ok) {
         setSubmitted(true);
         setEmail("");
         setName("");
@@ -59,8 +57,8 @@ const Newsletter = () => {
               Stay <span className="gradient-text">Ahead</span> of the Curve
             </h2>
             <p className="text-muted-foreground mb-6 text-sm">
-              Weekly insights on AI, tech, and digital growth — delivered straight
-              to your inbox! 🚀
+              Weekly insights on AI, tech, and digital growth — delivered
+              straight to your inbox! 🚀
             </p>
 
             {submitted ? (
