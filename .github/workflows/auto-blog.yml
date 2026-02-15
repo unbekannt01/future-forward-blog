@@ -1,0 +1,44 @@
+name: 🤖 NexBlog Auto Generator (FREE)
+
+on:
+  schedule:
+    - cron: '0 2 */2 * *'   # Har 2 din, raat 2 baje UTC = subah 7:30 IST
+  workflow_dispatch:          # GitHub se manual run bhi kar sakte ho
+
+jobs:
+  generate-blog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: 📥 Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 📦 Install Script Dependencies
+        run: |
+          cd scripts
+          npm install
+
+      - name: 🚀 Generate Blog & Save to Firebase
+        env:
+          # FREE - Google Gemini API (no credit card!)
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+          # FREE - Cloudinary image upload
+          CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+
+          # FREE - Firebase Firestore (Admin SDK)
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+          FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
+          FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
+        run: node scripts/generate-blog.js
+
+      - name: ✅ Blog Generated Successfully!
+        run: echo "🎉 New blog is now LIVE on NexBlog!"

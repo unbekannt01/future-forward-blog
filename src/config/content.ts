@@ -1,3 +1,26 @@
+/**
+ * src/config/content.ts  — FIREBASE VERSION (100% FREE)
+ *
+ * Ye file tumhare existing content.ts ki jagah lega.
+ * Firebase Firestore se real-time blogs fetch karta hai.
+ * Gemini se generate hue blogs turant yahan show honge!
+ */
+
+import { initializeApp, getApps } from "firebase/app";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  getDoc,
+  doc,
+  query,
+  where,
+  orderBy,
+  limit,
+} from "firebase/firestore";
+
+// ─── TYPES ─────────────────────────────────────────────────────────────────
+
 export interface BlogPost {
   id: string;
   title: string;
@@ -13,162 +36,132 @@ export interface BlogPost {
     metaTitle: string;
     metaDescription: string;
     keywords: string[];
-    slug: string;
   };
 }
 
-export interface Comment {
-  id: string;
-  author: string;
-  content: string;
-  date: string;
-  email?: string;
-}
+// ─── FIREBASE CONFIG ───────────────────────────────────────────────────────
+// .env file se aata hai (neeche guide mein bataya hai)
 
-interface ContentData {
-  siteConfig: {
-    name: string;
-    tagline: string;
-    author: string;
-    description: string;
+const firebaseConfig = {
+  apiKey:            import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain:        import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId:         import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket:     import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId:             import.meta.env.VITE_FIREBASE_APP_ID,
+};
+
+// Duplicate init avoid karo
+const app =
+  getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+const db = getFirestore(app);
+
+// ─── SIMPLE CACHE (5 min) ──────────────────────────────────────────────────
+let _cache: BlogPost[] | null = null;
+let _cacheAt = 0;
+const TTL = 5 * 60 * 1000;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function toPost(data: any, id: string): BlogPost {
+  return {
+    id:       data.id || id,
+    title:    data.title || "",
+    excerpt:  data.excerpt || "",
+    content:  data.content || "",
+    category: data.category || "AI & Technology",
+    author:   data.author || "NexBlog Tech Editor",
+    date:     data.date || new Date().toISOString().split("T")[0],
+    readTime: data.readTime || "5 min read",
+    image:    data.image || "https://res.cloudinary.com/ddi8qw8fw/image/upload/v1770737413/nexblog_et3dga.png",
+    tags:     data.tags || [],
+    seo:      data.seo,
   };
-  categories: string[];
-  blogPosts: BlogPost[];
 }
 
-// ------------------------------
-// ⚡ High Performance Cache Setup
-// ------------------------------
+// ─── PUBLIC API ────────────────────────────────────────────────────────────
 
-let contentCache: ContentData | null = null;
-let cacheTime = 0;
+/** Saare published posts — latest first */
+export async function getBlogPosts(): Promise<BlogPost[]> {
+  if (_cache && Date.now() - _cacheAt < TTL) return _cache;
 
-// ⏳ Cache TTL (Best for blogs: 1–5 min)
-const CACHE_TTL = 60 * 1000; // 1 minute
-
-let loadingPromise: Promise<ContentData> | null = null;
-
-// ------------------------------
-// 🚀 Smart Loader (Fast + Safe)
-// ------------------------------
-
-async function loadContent(): Promise<ContentData> {
-  const now = Date.now();
-
-  // Serve fast cache if valid
-  if (contentCache && now - cacheTime < CACHE_TTL) {
-    return contentCache;
+  try {
+    const q = query(
+      collection(db, "blogPosts"),
+      where("published", "==", true),
+      orderBy("createdAt", "desc"),
+      limit(100)
+    );
+    const snap = await getDocs(q);
+    _cache = snap.docs.map((d) => toPost(d.data(), d.id));
+    _cacheAt = Date.now();
+    return _cache;
+  } catch (e) {
+    console.error("Firebase fetch error:", e);
+    return _cache || [];
   }
+}
 
-  // Avoid duplicate parallel calls
-  if (loadingPromise) {
-    return loadingPromise;
+/** Category filter */
+export async function getPostsByCategory(cat: string): Promise<BlogPost[]> {
+  if (cat === "All") return getBlogPosts();
+  try {
+    const q = query(
+      collection(db, "blogPosts"),
+      where("published", "==", true),
+      where("category", "==", cat),
+      orderBy("createdAt", "desc")
+    );
+    const snap = await getDocs(q);
+    return snap.docs.map((d) => toPost(d.data(), d.id));
+  } catch {
+    const all = await getBlogPosts();
+    return all.filter((p) => p.category === cat);
   }
-
-  loadingPromise = (async () => {
-    try {
-      const CDN_URL = import.meta.env.VITE_CONTENT_CDN_URL;
-      const isDev = import.meta.env.DEV;
-
-      const contentUrl = isDev
-        ? '/content.json'
-        : `${CDN_URL}?t=${Date.now()}`; // Cache-bypass
-
-      if (!contentUrl) {
-        throw new Error('Content CDN URL missing');
-      }
-
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 8000);
-
-      const res = await fetch(contentUrl, {
-        cache: 'no-store',
-        signal: controller.signal,
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-
-      clearTimeout(timeout);
-
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status}`);
-      }
-
-      const data = await res.json();
-
-      contentCache = data;
-      cacheTime = now;
-
-      return data;
-
-    } catch (err) {
-      console.error('❌ CDN Load Failed:', err);
-
-      // Return old cache if available (offline-safe UX)
-      if (contentCache) {
-        console.warn('⚠️ Serving stale cached data');
-        return contentCache;
-      }
-
-      // Emergency fallback
-      return {
-        siteConfig: {
-          name: "NexBlog",
-          tagline: "Tech Insights",
-          author: "NexBlog Team",
-          description: "High quality technical blogs"
-        },
-        categories: ["All"],
-        blogPosts: []
-      };
-    } finally {
-      loadingPromise = null;
-    }
-  })();
-
-  return loadingPromise;
 }
 
-// ------------------------------
-// 📦 Public APIs (Optimized)
-// ------------------------------
-
-export async function getSiteConfig() {
-  return (await loadContent()).siteConfig;
+/** ID se ek post */
+export async function getPostById(id: string): Promise<BlogPost | undefined> {
+  if (_cache) {
+    const hit = _cache.find((p) => p.id === id);
+    if (hit) return hit;
+  }
+  try {
+    const snap = await getDoc(doc(db, "blogPosts", id));
+    return snap.exists() ? toPost(snap.data(), snap.id) : undefined;
+  } catch {
+    return undefined;
+  }
 }
 
-export async function getCategories() {
-  return (await loadContent()).categories;
-}
-
-export async function getBlogPosts() {
-  return (await loadContent()).blogPosts;
-}
-
-export async function getPostsByCategory(category: string) {
-  const posts = (await loadContent()).blogPosts;
-  if (category === "All") return posts;
-  return posts.filter(p => p.category === category);
-}
-
-export async function getPostById(id: string) {
-  return (await loadContent()).blogPosts.find(p => p.id === id);
-}
-
-export async function searchPosts(query: string) {
-  const lower = query.toLowerCase();
-  return (await loadContent()).blogPosts.filter(p =>
-    p.title.toLowerCase().includes(lower) ||
-    p.excerpt.toLowerCase().includes(lower) ||
-    p.tags.some(tag => tag.toLowerCase().includes(lower))
+/** Search */
+export async function searchPosts(q: string): Promise<BlogPost[]> {
+  if (!q.trim()) return getBlogPosts();
+  const lq = q.toLowerCase();
+  const all = await getBlogPosts();
+  return all.filter(
+    (p) =>
+      p.title.toLowerCase().includes(lq) ||
+      p.excerpt.toLowerCase().includes(lq) ||
+      p.tags.some((t) => t.toLowerCase().includes(lq))
   );
 }
 
-// ------------------------------
-// 🚀 Preload for Ultra-fast UX
-// ------------------------------
+/** Categories list */
+export function getCategories(): string[] {
+  return [
+    "All",
+    "AI & Technology",
+    "Digital Growth",
+    "Online Earning",
+    "Social Media",
+    "Motivation",
+    "Future Trends",
+    "Current Affairs",
+  ];
+}
 
-export function preloadContent() {
-  loadContent().catch(() => {});
+/** Cache clear karo (fresh load ke liye) */
+export function clearCache() {
+  _cache = null;
+  _cacheAt = 0;
 }
