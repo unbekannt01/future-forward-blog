@@ -1,3 +1,4 @@
+// src/App.tsx  ← REPLACE with this (Admin route added)
 import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -14,6 +15,7 @@ const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
+const Admin = lazy(() => import("./pages/Admin"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
@@ -26,7 +28,6 @@ const queryClient = new QueryClient({
   },
 });
 
-// Beautiful loading component
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center bg-background">
     <div className="text-center">
@@ -55,6 +56,8 @@ const App = () => (
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
+            {/* Admin panel — not linked in navbar, direct URL only */}
+            <Route path="/admin" element={<Admin />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>

@@ -1,3 +1,20 @@
+// src/config/content.ts
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  orderBy,
+  setDoc,
+  deleteDoc,
+} from "firebase/firestore";
+import { db } from "@/lib/firebase";
+
+// ─────────────────────────────────────────
+// Types
+// ─────────────────────────────────────────
+
 export interface BlogPost {
   id: string;
   title: string;
@@ -9,6 +26,7 @@ export interface BlogPost {
   readTime: string;
   image: string;
   tags: string[];
+  published?: boolean;
   seo?: {
     metaTitle: string;
     metaDescription: string;
@@ -25,150 +43,152 @@ export interface Comment {
   email?: string;
 }
 
-interface ContentData {
-  siteConfig: {
-    name: string;
-    tagline: string;
-    author: string;
-    description: string;
-  };
-  categories: string[];
-  blogPosts: BlogPost[];
+// ─────────────────────────────────────────
+// Simple in-memory cache (1 min TTL)
+// ─────────────────────────────────────────
+
+const cache: {
+  posts?: { data: BlogPost[]; time: number };
+  categories?: { data: string[]; time: number };
+} = {};
+
+const TTL = 60 * 1000; // 1 minute
+
+function isFresh(time: number) {
+  return Date.now() - time < TTL;
 }
 
-// ------------------------------
-// ⚡ High Performance Cache Setup
-// ------------------------------
+// ─────────────────────────────────────────
+// Public Read APIs
+// ─────────────────────────────────────────
 
-let contentCache: ContentData | null = null;
-let cacheTime = 0;
+export async function getBlogPosts(): Promise<BlogPost[]> {
+  if (cache.posts && isFresh(cache.posts.time)) return cache.posts.data;
 
-// ⏳ Cache TTL (Best for blogs: 1–5 min)
-const CACHE_TTL = 60 * 1000; // 1 minute
+  try {
+    // Single field orderBy — no composite index needed
+    // published filter JS me ho raha hai
+    const snap = await getDocs(
+      query(collection(db, "posts"), orderBy("date", "desc"))
+    );
+    const posts = snap.docs
+      .map((d) => ({ id: d.id, ...d.data() } as BlogPost))
+      .filter((p) => p.published === true);
 
-let loadingPromise: Promise<ContentData> | null = null;
-
-// ------------------------------
-// 🚀 Smart Loader (Fast + Safe)
-// ------------------------------
-
-async function loadContent(): Promise<ContentData> {
-  const now = Date.now();
-
-  // Serve fast cache if valid
-  if (contentCache && now - cacheTime < CACHE_TTL) {
-    return contentCache;
+    cache.posts = { data: posts, time: Date.now() };
+    return posts;
+  } catch (err) {
+    console.error("getBlogPosts error:", err);
+    return cache.posts?.data ?? [];
   }
+}
 
-  // Avoid duplicate parallel calls
-  if (loadingPromise) {
-    return loadingPromise;
+// Admin ke liye — ALL posts (drafts bhi)
+export async function getAllPostsForAdmin(): Promise<BlogPost[]> {
+  try {
+    const snap = await getDocs(
+      query(collection(db, "posts"), orderBy("date", "desc"))
+    );
+    return snap.docs.map((d) => ({ id: d.id, ...d.data() } as BlogPost));
+  } catch (err) {
+    console.error("getAllPostsForAdmin error:", err);
+    return [];
   }
+}
 
-  loadingPromise = (async () => {
-    try {
-      const CDN_URL = import.meta.env.VITE_CONTENT_CDN_URL;
-      const isDev = import.meta.env.DEV;
+export async function getPostById(id: string): Promise<BlogPost | undefined> {
+  // Cache check first
+  if (cache.posts && isFresh(cache.posts.time)) {
+    return cache.posts.data.find((p) => p.id === id);
+  }
+  try {
+    const snap = await getDoc(doc(db, "posts", id));
+    if (!snap.exists()) return undefined;
+    return { id: snap.id, ...snap.data() } as BlogPost;
+  } catch (err) {
+    console.error("getPostById error:", err);
+    return undefined;
+  }
+}
 
-      const contentUrl = isDev
-        ? '/content.json'
-        : `${CDN_URL}?t=${Date.now()}`; // Cache-bypass
+export async function getCategories(): Promise<string[]> {
+  if (cache.categories && isFresh(cache.categories.time)) return cache.categories.data;
 
-      if (!contentUrl) {
-        throw new Error('Content CDN URL missing');
-      }
-
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 8000);
-
-      const res = await fetch(contentUrl, {
-        cache: 'no-store',
-        signal: controller.signal,
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-
-      clearTimeout(timeout);
-
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status}`);
-      }
-
-      const data = await res.json();
-
-      contentCache = data;
-      cacheTime = now;
-
-      return data;
-
-    } catch (err) {
-      console.error('❌ CDN Load Failed:', err);
-
-      // Return old cache if available (offline-safe UX)
-      if (contentCache) {
-        console.warn('⚠️ Serving stale cached data');
-        return contentCache;
-      }
-
-      // Emergency fallback
-      return {
-        siteConfig: {
-          name: "NexBlog",
-          tagline: "Tech Insights",
-          author: "NexBlog Team",
-          description: "High quality technical blogs"
-        },
-        categories: ["All"],
-        blogPosts: []
-      };
-    } finally {
-      loadingPromise = null;
+  try {
+    const snap = await getDoc(doc(db, "config", "categories"));
+    if (snap.exists()) {
+      const cats = snap.data().list as string[];
+      cache.categories = { data: cats, time: Date.now() };
+      return cats;
     }
-  })();
-
-  return loadingPromise;
+    return ["All"];
+  } catch (err) {
+    console.error("getCategories error:", err);
+    return cache.categories?.data ?? ["All"];
+  }
 }
-
-// ------------------------------
-// 📦 Public APIs (Optimized)
-// ------------------------------
 
 export async function getSiteConfig() {
-  return (await loadContent()).siteConfig;
+  try {
+    const snap = await getDoc(doc(db, "config", "site"));
+    if (snap.exists()) return snap.data();
+  } catch (err) {
+    console.error("getSiteConfig error:", err);
+  }
+  return {
+    name: "NexBlog",
+    tagline: "Tech Insights",
+    author: "NexBlog Team",
+    description: "High quality technical blogs",
+  };
 }
 
-export async function getCategories() {
-  return (await loadContent()).categories;
-}
-
-export async function getBlogPosts() {
-  return (await loadContent()).blogPosts;
-}
-
-export async function getPostsByCategory(category: string) {
-  const posts = (await loadContent()).blogPosts;
+export async function getPostsByCategory(category: string): Promise<BlogPost[]> {
+  const posts = await getBlogPosts();
   if (category === "All") return posts;
-  return posts.filter(p => p.category === category);
+  return posts.filter((p) => p.category === category);
 }
 
-export async function getPostById(id: string) {
-  return (await loadContent()).blogPosts.find(p => p.id === id);
-}
-
-export async function searchPosts(query: string) {
+export async function searchPosts(query: string): Promise<BlogPost[]> {
   const lower = query.toLowerCase();
-  return (await loadContent()).blogPosts.filter(p =>
-    p.title.toLowerCase().includes(lower) ||
-    p.excerpt.toLowerCase().includes(lower) ||
-    p.tags.some(tag => tag.toLowerCase().includes(lower))
+  const posts = await getBlogPosts();
+  return posts.filter(
+    (p) =>
+      p.title.toLowerCase().includes(lower) ||
+      p.excerpt.toLowerCase().includes(lower) ||
+      p.tags.some((t) => t.toLowerCase().includes(lower))
   );
 }
 
-// ------------------------------
-// 🚀 Preload for Ultra-fast UX
-// ------------------------------
+// ─────────────────────────────────────────
+// Admin Write APIs
+// ─────────────────────────────────────────
+
+export async function savePost(post: BlogPost): Promise<void> {
+  const { id, ...data } = post;
+  await setDoc(doc(db, "posts", id), {
+    ...data,
+    published: data.published ?? true,
+    updatedAt: new Date().toISOString(),
+  });
+  delete cache.posts;
+}
+
+export async function deletePost(id: string): Promise<void> {
+  await deleteDoc(doc(db, "posts", id));
+  delete cache.posts;
+}
+
+export async function saveCategories(categories: string[]): Promise<void> {
+  await setDoc(doc(db, "config", "categories"), { list: categories });
+  delete cache.categories;
+}
+
+// ─────────────────────────────────────────
+// Preload
+// ─────────────────────────────────────────
 
 export function preloadContent() {
-  loadContent().catch(() => {});
+  getBlogPosts().catch(() => {});
+  getCategories().catch(() => {});
 }
