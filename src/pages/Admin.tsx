@@ -21,7 +21,7 @@ import {
   Tag,
   Loader2,
   ChevronLeft,
-  Clock, // ← CHANGE 1: Clock icon add kiya
+  Clock,
 } from "lucide-react";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -39,7 +39,6 @@ function generateId(title: string) {
   );
 }
 
-// ─── CHANGE 2: publishedAt format helper ──────────────────────────────────────
 function formatPublishedAt(iso: string) {
   return new Date(iso).toLocaleString("en-IN", {
     day: "2-digit",
@@ -49,6 +48,31 @@ function formatPublishedAt(iso: string) {
     minute: "2-digit",
     hour12: true,
   });
+}
+
+// ✅ FORMAT CONTENT PROPERLY - Remove extra spaces, fix numbered lists
+function formatContent(content: string): string {
+  return content
+    .split("\n")
+    .map((line) => {
+      const trimmed = line.trim();
+      
+      // Remove leading/trailing spaces but keep structure
+      if (trimmed === "") return "";
+      
+      // Ensure numbered lists have proper format (1. 2. 3. NOT 1. 1. 1.)
+      if (/^\d+\.\s/.test(trimmed)) {
+        return trimmed;
+      }
+      
+      // Keep headings, blockquotes, etc. properly trimmed
+      if (trimmed.startsWith("##") || trimmed.startsWith(">") || trimmed.startsWith("-")) {
+        return trimmed;
+      }
+      
+      return trimmed;
+    })
+    .join("\n");
 }
 
 const EMPTY_POST: Omit<BlogPost, "id"> = {
@@ -169,7 +193,16 @@ function PostEditor({
         .split(",")
         .map((t) => t.trim())
         .filter(Boolean);
-      await savePost({ id, ...form, tags });
+      
+      // ✅ Format content before saving
+      const formattedContent = formatContent(form.content);
+      
+      await savePost({ 
+        id, 
+        ...form, 
+        content: formattedContent,
+        tags 
+      });
       onSave();
     } catch {
       setError("Save failed. Please try again.");
@@ -194,7 +227,6 @@ function PostEditor({
           {isNew ? "New Post" : "Edit Post"}
         </h2>
 
-        {/* ── CHANGE 3: publishedAt editor screen mein bhi dikhao ── */}
         {!isNew && (form as BlogPost).publishedAt && (
           <span className="flex items-center gap-1 text-xs text-muted-foreground">
             <Clock className="w-3 h-3" />
@@ -256,13 +288,21 @@ function PostEditor({
               rows={2}
               className={`${inputCls} resize-none`}
             />
-            <textarea
-              value={form.content}
-              onChange={(e) => set("content", e.target.value)}
-              placeholder="Content (Markdown: ## Heading, **bold**, - list, > quote)"
-              rows={18}
-              className={`${inputCls} resize-y font-mono text-xs leading-relaxed`}
-            />
+            <div>
+              <label className="text-xs text-muted-foreground mb-2 block">
+                Content (Markdown) - Use 1. 2. 3. for numbered lists, - for bullets
+              </label>
+              <textarea
+                value={form.content}
+                onChange={(e) => set("content", e.target.value)}
+                placeholder="## Heading, **bold**, 1. Numbered list, - Bullet list, > Blockquote"
+                rows={18}
+                className={`${inputCls} resize-y font-mono text-xs leading-relaxed`}
+              />
+              <p className="text-xs text-muted-foreground mt-2">
+                💡 Tip: Use proper numbered lists (1. 2. 3. NOT 1. 1. 1.)
+              </p>
+            </div>
           </div>
         </div>
 
@@ -607,7 +647,6 @@ function Dashboard() {
                           </span>
                         </div>
 
-                        {/* ── CHANGE 4: publishedAt post list mein dikhao ── */}
                         <p className="text-xs text-muted-foreground mt-0.5">
                           {post.category} · {post.date} · {post.readTime}
                           {post.publishedAt && (
