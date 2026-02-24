@@ -101,21 +101,22 @@ const BlogPost = () => {
   const contentHtml = post.content
     .split("\n")
     .map((line: string) => {
-      if (line.startsWith("### "))
-        return `<h3 class="text-lg font-semibold mt-6 mb-3 text-foreground">${line.slice(4)}</h3>`;
-      if (line.startsWith("## "))
-        return `<h2 class="text-xl font-semibold mt-7 mb-3 text-primary">${line.slice(3)}</h2>`;
-      if (line.startsWith("> "))
-        return `<blockquote class="border-l-2 border-primary pl-4 my-4 text-muted-foreground italic">${line.slice(2)}</blockquote>`;
-      if (line.startsWith("**") && line.endsWith("**") && !line.includes(" "))
-        return `<p class="font-medium text-foreground mt-4 mb-2">${line.slice(2, -2)}</p>`;
-      if (line.startsWith("- "))
-        return `<li data-list="bullet" class="text-muted-foreground ml-6 list-disc leading-relaxed">${line.slice(2)}</li>`;
-      if (/^\d+\.\s/.test(line))
-        return `<li data-list="numbered" class="text-muted-foreground ml-6 list-decimal leading-relaxed">${line.replace(/^\d+\.\s/, "")}</li>`;
-      if (line.trim().startsWith("|") && line.trim().endsWith("|")) {
-        const cells = line
-          .trim()
+      const trimmedLine = line.trim(); // ← TRIM FIRST
+      
+      if (trimmedLine.startsWith("### "))
+        return `<h3 class="text-lg font-semibold mt-6 mb-3 text-foreground">${trimmedLine.slice(4)}</h3>`;
+      if (trimmedLine.startsWith("## "))
+        return `<h2 class="text-xl font-semibold mt-7 mb-3 text-primary">${trimmedLine.slice(3)}</h2>`;
+      if (trimmedLine.startsWith("> "))
+        return `<blockquote class="border-l-2 border-primary pl-4 my-4 text-muted-foreground italic">${trimmedLine.slice(2)}</blockquote>`;
+      if (trimmedLine.startsWith("**") && trimmedLine.endsWith("**") && !trimmedLine.includes(" "))
+        return `<p class="font-medium text-foreground mt-4 mb-2">${trimmedLine.slice(2, -2)}</p>`;
+      if (trimmedLine.startsWith("- "))
+        return `<li data-list="bullet" class="text-muted-foreground ml-6 list-disc leading-relaxed">${trimmedLine.slice(2)}</li>`;
+      if (/^\d+\.\s/.test(trimmedLine)) // ← USE TRIMMED LINE
+        return `<li data-list="numbered" class="text-muted-foreground ml-6 list-decimal leading-relaxed">${trimmedLine.replace(/^\d+\.\s/, "")}</li>`;
+      if (trimmedLine.startsWith("|") && trimmedLine.endsWith("|")) {
+        const cells = trimmedLine
           .slice(1, -1)
           .split("|")
           .map((cell: string) => cell.trim());
@@ -143,8 +144,8 @@ const BlogPost = () => {
   </tr>`;
       }
 
-      if (line.trim() === "") return "<br/>";
-      const processedLine = line.replace(
+      if (trimmedLine === "") return "<br/>";
+      const processedLine = trimmedLine.replace(
         /\*\*(.+?)\*\*/g,
         '<strong class="font-medium">$1</strong>',
       );
@@ -161,8 +162,8 @@ const BlogPost = () => {
     '<ul class="my-4">$1</ul>',
   );
   finalHtml = finalHtml.replace(
-    /(<li[^>]*data-list="numbered"[^>]*>.*?<\/li>(?:\s*<li[^>]*data-list="numbered"[^>]*>.*?<\/li>)*)/gs,
-    '<ol class="my-4 list-decimal">$1</ol>',
+    /(<li data-list="numbered"[^>]*>.*?<\/li>(?:\s*<li data-list="numbered"[^>]*>.*?<\/li>)*)/gs,
+    '<ol class="my-4 list-decimal list-inside">$1</ol>',
   );
   finalHtml = finalHtml.replace(/ data-list="(bullet|numbered)"/g, "");
 
