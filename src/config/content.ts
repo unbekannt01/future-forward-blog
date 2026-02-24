@@ -27,6 +27,8 @@ export interface BlogPost {
   image: string;
   tags: string[];
   published?: boolean;
+    publishedAt?: string; 
+
   seo?: {
     metaTitle: string;
     metaDescription: string;
@@ -166,11 +168,23 @@ export async function searchPosts(query: string): Promise<BlogPost[]> {
 
 export async function savePost(post: BlogPost): Promise<void> {
   const { id, ...data } = post;
+
+  // publishedAt sirf tab set karo jab pehli baar publish ho
+  const existingSnap = await getDoc(doc(db, "posts", id));
+  const existing = existingSnap.exists() ? existingSnap.data() : null;
+
+  const publishedAt =
+    data.published === true
+      ? existing?.publishedAt ?? new Date().toISOString()
+      : existing?.publishedAt ?? null;
+
   await setDoc(doc(db, "posts", id), {
     ...data,
     published: data.published ?? true,
+    publishedAt,
     updatedAt: new Date().toISOString(),
   });
+
   delete cache.posts;
 }
 

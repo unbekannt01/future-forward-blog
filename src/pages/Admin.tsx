@@ -21,6 +21,7 @@ import {
   Tag,
   Loader2,
   ChevronLeft,
+  Clock, // ← CHANGE 1: Clock icon add kiya
 } from "lucide-react";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -36,6 +37,18 @@ function generateId(title: string) {
     "-" +
     Date.now().toString(36)
   );
+}
+
+// ─── CHANGE 2: publishedAt format helper ──────────────────────────────────────
+function formatPublishedAt(iso: string) {
+  return new Date(iso).toLocaleString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
 }
 
 const EMPTY_POST: Omit<BlogPost, "id"> = {
@@ -104,7 +117,11 @@ function LoginScreen() {
             disabled={submitting}
             className="w-full py-3 rounded-xl bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold text-sm flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-50"
           >
-            {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : "Sign In"}
+            {submitting ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              "Sign In"
+            )}
           </button>
         </form>
       </div>
@@ -127,10 +144,10 @@ function PostEditor({
 }) {
   const isNew = !initial;
   const [form, setForm] = useState<Omit<BlogPost, "id">>(
-    initial ? { ...initial } : { ...EMPTY_POST }
+    initial ? { ...initial } : { ...EMPTY_POST },
   );
   const [tagsInput, setTagsInput] = useState(
-    initial ? initial.tags.join(", ") : ""
+    initial ? initial.tags.join(", ") : "",
   );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -173,7 +190,18 @@ function PostEditor({
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
-        <h2 className="text-xl font-bold">{isNew ? "New Post" : "Edit Post"}</h2>
+        <h2 className="text-xl font-bold">
+          {isNew ? "New Post" : "Edit Post"}
+        </h2>
+
+        {/* ── CHANGE 3: publishedAt editor screen mein bhi dikhao ── */}
+        {!isNew && (form as BlogPost).publishedAt && (
+          <span className="flex items-center gap-1 text-xs text-muted-foreground">
+            <Clock className="w-3 h-3" />
+            Published: {formatPublishedAt((form as BlogPost).publishedAt!)}
+          </span>
+        )}
+
         <div className="ml-auto flex items-center gap-2">
           <button
             onClick={() => set("published", !form.published)}
@@ -183,7 +211,11 @@ function PostEditor({
                 : "bg-muted text-muted-foreground border-border"
             }`}
           >
-            {form.published ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
+            {form.published ? (
+              <Eye className="w-3.5 h-3.5" />
+            ) : (
+              <EyeOff className="w-3.5 h-3.5" />
+            )}
             {form.published ? "Published" : "Draft"}
           </button>
           <button
@@ -191,7 +223,11 @@ function PostEditor({
             disabled={saving}
             className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-primary to-secondary text-primary-foreground font-medium text-sm hover:opacity-90 disabled:opacity-50"
           >
-            {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+            {saving ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Save className="w-4 h-4" />
+            )}
             Save
           </button>
         </div>
@@ -235,7 +271,9 @@ function PostEditor({
           <div className="glass rounded-xl p-5 space-y-4">
             <h3 className="text-sm font-semibold">Post Settings</h3>
             <div>
-              <label className="text-xs text-muted-foreground mb-1 block">Category *</label>
+              <label className="text-xs text-muted-foreground mb-1 block">
+                Category *
+              </label>
               <select
                 value={form.category}
                 onChange={(e) => set("category", e.target.value)}
@@ -245,12 +283,16 @@ function PostEditor({
                 {categories
                   .filter((c) => c !== "All")
                   .map((c) => (
-                    <option key={c} value={c}>{c}</option>
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
                   ))}
               </select>
             </div>
             <div>
-              <label className="text-xs text-muted-foreground mb-1 block">Author</label>
+              <label className="text-xs text-muted-foreground mb-1 block">
+                Author
+              </label>
               <input
                 value={form.author}
                 onChange={(e) => set("author", e.target.value)}
@@ -259,7 +301,9 @@ function PostEditor({
               />
             </div>
             <div>
-              <label className="text-xs text-muted-foreground mb-1 block">Date</label>
+              <label className="text-xs text-muted-foreground mb-1 block">
+                Date
+              </label>
               <input
                 type="date"
                 value={form.date}
@@ -268,7 +312,9 @@ function PostEditor({
               />
             </div>
             <div>
-              <label className="text-xs text-muted-foreground mb-1 block">Read Time</label>
+              <label className="text-xs text-muted-foreground mb-1 block">
+                Read Time
+              </label>
               <input
                 value={form.readTime}
                 onChange={(e) => set("readTime", e.target.value)}
@@ -281,7 +327,9 @@ function PostEditor({
           <div className="glass rounded-xl p-5 space-y-4">
             <h3 className="text-sm font-semibold">Media & SEO</h3>
             <div>
-              <label className="text-xs text-muted-foreground mb-1 block">Cover Image URL</label>
+              <label className="text-xs text-muted-foreground mb-1 block">
+                Cover Image URL
+              </label>
               <input
                 value={form.image}
                 onChange={(e) => set("image", e.target.value)}
@@ -383,7 +431,11 @@ function CategoriesManager({
         disabled={saving}
         className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-primary to-secondary text-primary-foreground font-medium text-sm hover:opacity-90 disabled:opacity-50"
       >
-        {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+        {saving ? (
+          <Loader2 className="w-4 h-4 animate-spin" />
+        ) : (
+          <Save className="w-4 h-4" />
+        )}
         Save Categories
       </button>
     </div>
@@ -405,7 +457,7 @@ function Dashboard() {
     setLoading(true);
     try {
       const [allPosts, catsData] = await Promise.all([
-        getAllPostsForAdmin(), // ✅ drafts bhi aayenge
+        getAllPostsForAdmin(),
         getCategories(),
       ]);
       setPosts(allPosts);
@@ -448,7 +500,11 @@ function Dashboard() {
   if (view === "editor") {
     return (
       <div className="min-h-screen bg-background">
-        <AdminHeader user={user} onLogout={logout} onBack={() => setView("list")} />
+        <AdminHeader
+          user={user}
+          onLogout={logout}
+          onBack={() => setView("list")}
+        />
         <main className="pt-20 pb-20 px-4">
           <PostEditor
             initial={editingPost}
@@ -499,7 +555,10 @@ function Dashboard() {
           </div>
 
           {view === "categories" && (
-            <CategoriesManager categories={categories} onUpdate={setCategories} />
+            <CategoriesManager
+              categories={categories}
+              onUpdate={setCategories}
+            />
           )}
 
           {view === "list" && (
@@ -521,7 +580,10 @@ function Dashboard() {
               ) : (
                 <div className="space-y-3">
                   {posts.map((post) => (
-                    <div key={post.id} className="glass rounded-xl p-4 flex items-center gap-4">
+                    <div
+                      key={post.id}
+                      className="glass rounded-xl p-4 flex items-center gap-4"
+                    >
                       {post.image && (
                         <img
                           src={post.image}
@@ -531,7 +593,9 @@ function Dashboard() {
                       )}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <h3 className="font-medium text-sm truncate">{post.title}</h3>
+                          <h3 className="font-medium text-sm truncate">
+                            {post.title}
+                          </h3>
                           <span
                             className={`text-xs px-2 py-0.5 rounded-full ${
                               post.published
@@ -542,8 +606,16 @@ function Dashboard() {
                             {post.published ? "Published" : "Draft"}
                           </span>
                         </div>
+
+                        {/* ── CHANGE 4: publishedAt post list mein dikhao ── */}
                         <p className="text-xs text-muted-foreground mt-0.5">
                           {post.category} · {post.date} · {post.readTime}
+                          {post.publishedAt && (
+                            <span className="ml-2 inline-flex items-center gap-1 text-blue-400/70">
+                              <Clock className="w-3 h-3" />
+                              {formatPublishedAt(post.publishedAt)}
+                            </span>
+                          )}
                         </p>
                       </div>
                       <div className="flex items-center gap-2 flex-shrink-0">
@@ -608,7 +680,9 @@ function AdminHeader({
           </span>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-xs text-muted-foreground hidden sm:block">{user?.email}</span>
+          <span className="text-xs text-muted-foreground hidden sm:block">
+            {user?.email}
+          </span>
           <button
             onClick={onLogout}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
