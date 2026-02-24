@@ -161,8 +161,8 @@ const BlogPost = () => {
     '<ul class="my-4">$1</ul>',
   );
   finalHtml = finalHtml.replace(
-    /(<li data-list="numbered"[^>]*>.*?<\/li>(?:\s*<li data-list="numbered"[^>]*>.*?<\/li>)*)/gs,
-    '<ol class="my-4">$1</ol>',
+    /(<li[^>]*data-list="numbered"[^>]*>.*?<\/li>(?:\s*<li[^>]*data-list="numbered"[^>]*>.*?<\/li>)*)/gs,
+    '<ol class="my-4 list-decimal">$1</ol>',
   );
   finalHtml = finalHtml.replace(/ data-list="(bullet|numbered)"/g, "");
 
